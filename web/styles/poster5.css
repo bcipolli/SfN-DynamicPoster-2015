@@ -1,0 +1,214 @@
+/* poster body */
+body {
+    x-padding: 0;
+    margin: 0;
+    font-size: 24px;
+}
+#poster, #poster {
+    width: 1920px;
+    height: 1080;
+    background-color: #ffe;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* poster title */
+.poster-title {
+    padding: 10px 10px 0px 10px;
+    width: 100%;
+    height: 185px;
+    background-color: #acf;
+    box-sizing: border-box;
+    text-align: center;
+    border-bottom: 5px dotted black;
+}
+
+.poster-title .content {
+    width: 1100px;
+    float: left;
+    padding: 0px 5px 0px 5px;
+    box-sizing: border-box;
+}
+
+.poster-title .content .title {
+    font-size: 40px;
+    float: left;
+    box-sizing: border-box;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.poster-title .content .authors {
+    font-size: 28px;
+}
+
+.poster-title .spacer {
+    width: 400px;
+    height: 170px; /* why? */
+    float: left;
+    box-sizing: border-box;
+}
+
+.poster-title .logo img {
+    max-width: 400px;
+    max-height: 160px;
+    float: left;
+}
+
+.poster-title .qrcode img {
+    max-width: 130px;
+    max-height: 130px;
+    box-sizing: border-box;
+    margin: 0px auto 0px auto;
+}
+
+.download-text {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+
+
+/* poster summary content */
+#poster .section {
+    width: 850px;
+    height: 325px;
+    padding: 0px;
+    margin: 60px 50px 80px 50px;
+    box-sizing: border-box;
+    overflow:hidden;
+    border-radius: 25px;
+    box-shadow: 20px 20px 10px #888888;
+}
+
+#poster .section-button {
+    width: 100%;
+    height: 400px;
+    margin: 0px;
+    box-sizing: border-box;
+    display: block;
+    overflow:hidden;
+    border-radius: 0px;
+    box-shadow: none;
+}
+
+#poster .section .number {
+    position: relative;
+    left: 20px;
+    top: 10px;
+    font-size: 24px;
+    float: left;
+}
+
+#poster .section .title {
+    font-size: 34px;
+    text-align: center;
+    font-weight: bold;
+    width: 100%;
+    padding: 10px;
+}
+
+#poster .section .blurb {
+    padding: 25px 50px 25px 50px;
+    box-sizing: border-box;
+}
+
+#poster .section-button .blurb {
+    padding: 20px;
+}
+
+#poster .section-button .title {
+    font-size: 28px;
+    padding-top: 5px;
+    box-sizing: border-box;
+}
+
+/* poster main content */
+.section-buttons {
+    width: 15%;
+    height: 795px;
+    float: left;
+    box-sizing: border-box;
+}
+
+.section-buttons-expanded {
+    width: 50%;
+}
+
+.section-buttons-expanded .section {
+    background-color: #8af;
+}
+
+.section-button {
+    background-color: #acf;
+    border: 5px solid #acf; /*8af*/
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.main-content {
+    width: 70%;
+    float: left;
+    padding: 50px 100px 50px 100px;
+    height: 795px;
+    box-sizing: border-box;
+}
+.short-blurb {
+    display: none;
+}
+
+.main-content-collapsed {
+    width: 0%;
+    padding: 0px;
+}
+
+
+.section-summary-on, .main-content-on {
+    background-color:transparent;
+    border: 5px solid transparent;
+    box-sizing: border-box;
+}
+.section-summary-left-on {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.section-summary-right-on {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.section:hover {
+    background-color: #88f;
+    cursor: pointer;
+}
+
+.section-summary-on:hover {
+    background-color: transparent;
+}
+
+.section-details {
+    display: none;
+}
+
+.content-pane {
+    height: 725px;
+    overflow: scroll;
+}
+.content-pane div {
+    float: left;
+}
+
+
+/* poster footer */
+.poster-footer {
+    background-color: #acf;
+    width: 100%;
+    height: 105px;
+    padding: 5px;
+    float: left;
+    box-sizing: border-box;
+    display: none;
+    border-top: 5px dotted black;
+    z-index: -1;
+}
