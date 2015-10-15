@@ -1,0 +1,9 @@
+bokeh>=0.10.0
+flask
+nibabel
+pandas
+requests
+simplejson
+git+https://github.com/guruucsd/PING.git
+git+https://github.com/binarybottle/roygbiv.git
+git+https://github.com/binarybottle/mindboggle.git

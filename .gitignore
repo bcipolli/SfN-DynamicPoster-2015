@@ -1,0 +1,6 @@
+data/
+plots/
+results/
+deploy/
+*.pyc
+__pycache__
