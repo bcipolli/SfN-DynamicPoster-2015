@@ -57,7 +57,7 @@ def deploy():
 
     # Poster
     mkdirp('deploy')
-    copytree('web', 'deploy')
+    copytree('2014', 'deploy')
 
     # Brain
     mkdirp('deploy/brain')  # basedir
