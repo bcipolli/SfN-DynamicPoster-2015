@@ -3,11 +3,8 @@
 
 import os
 
+from ping.ping.data import prefixes
 from ping.scripts.brain import do_roygbiv
-
-
-prefixes = dict(desikan=dict(area='MRI_cort_area.ctx.', thickness='MRI_cort_thick.ctx.'),
-                destrieux=dict(area='Destrieux_area.', thickness='Destrieux_thickness.'))
 
 for measure in ['area', 'thickness']:
     for atlas in ['desikan', 'destrieux']:
