@@ -53,7 +53,7 @@ def deploy():
 
     app = flask.Flask(__name__, static_url_path='/static')
     ping_viz_path = osp.join(pathof('ping'), 'viz')
-    roygbiv_web_path = osp.join(pathof('roygbiv'), '..', 'web')
+    roygbiv_web_path = osp.join(pathof('roygbiv'), 'web')
 
     # Poster
     mkdirp('deploy')
