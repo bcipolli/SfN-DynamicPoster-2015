@@ -10,6 +10,8 @@ Create a website with all plots available. Url schema is as follows:
 
 
 """
+
+import glob
 import os
 import os.path as osp
 import shutil
@@ -61,13 +63,16 @@ def deploy():
     mkdirp('deploy/brain')  # basedir
     copytree(roygbiv_web_path, 'deploy/brain')
     symlink('deploy/brain/two_hemis.html', 'deploy/brain/index.html')
-    symlink('data', 'deploy/brain/data')  # data
+    mkdirp('deploy/brain/data')
+    symlink('data/fsaverage', 'deploy/brain/data/fsaverage')  # data
 
     # Manhattan
     mkdirp('deploy/gwas')
     copytree(osp.join(ping_viz_path, 'manhattan'), 'deploy/gwas')
     symlink('deploy/gwas/manhattan.html', 'deploy/gwas/index.html')
-    symlink(osp.abspath('data'), 'deploy/gwas/data')  # data
+    mkdirp('deploy/gwas/data')
+    for fil in glob.glob('data/*.json'):
+        symlink(fil, os.path.join('deploy/gwas', fil))  # data
 
     # scatter / similarity plots
     mkdirp('deploy/scatter')
