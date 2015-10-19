@@ -74,14 +74,14 @@ def deploy():
     copytree(roygbiv_web_path, 'deploy/brain')
     symlink('deploy/brain/two_hemis.html', 'deploy/brain/index.html')
     mkdirp('deploy/brain/data')
-    symlink('data/fsaverage', 'deploy/brain/data/fsaverage')  # data
+    symlink('generated/data/fsaverage', 'deploy/brain/data/fsaverage')  # data
 
     # Manhattan
     mkdirp('deploy/gwas')
     copytree(osp.join(ping_viz_path, 'manhattan'), 'deploy/gwas')
     symlink('deploy/gwas/manhattan.html', 'deploy/gwas/index.html')
     mkdirp('deploy/gwas/data')
-    for fil in glob.glob('data/*.json'):
+    for fil in glob.glob('generated/data/*.json'):
         symlink(fil, os.path.join('deploy/gwas', fil))  # data
 
     # scatter / similarity plots
