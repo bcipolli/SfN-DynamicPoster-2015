@@ -72,7 +72,8 @@ def deploy():
     # Brain
     mkdirp('deploy/brain')  # basedir
     copytree(roygbiv_web_path, 'deploy/brain')
-    symlink('deploy/brain/two_hemis.html', 'deploy/brain/index.html')
+    shutil.copy('brain/two_hemis.html', 'deploy/brain/index.html')
+    shutil.copy('brain/style.css', 'deploy/brain/css/style.css')
     mkdirp('deploy/brain/data')
     symlink('generated/data/fsaverage', 'deploy/brain/data/fsaverage')  # data
 
@@ -115,11 +116,18 @@ def server_it():
         data_dir = 'generated/data'
         return flask.send_from_directory(data_dir, path)
 
+    @app.route('/brain/js/<path:path>')
+    @app.route('/brain/css/<path:path>')
     @app.route('/brain/<path:path>')
-    def serve_brain_html(path):
-        import roygbiv
-        viz_dir = os.path.join(os.path.dirname(roygbiv.__file__), '..', 'web')
-        return flask.send_from_directory(viz_dir, path)
+    def serve_roygbiv_html(path):
+        try:
+            return flask.send_from_directory('brain', path)
+        except Exception as e:
+            import roygbiv
+            viz_dir = os.path.join(os.path.dirname(roygbiv.__file__), 'web')
+            ext = os.path.splitext(os.path.basename(path))[1][1:]
+            path = os.path.join(ext, path)
+            return flask.send_from_directory(viz_dir, path)
 
     @app.route('/gwas/<path:foo>/data/<path:path>')
     def serve_gwas_data(foo, path):
