@@ -25,6 +25,15 @@ from bokeh.templates import JS_RESOURCES, CSS_RESOURCES
 from bokeh.util.string import encode_utf8
 
 
+def serve_index():
+    return """
+        <a href='brain/two_hemis.html'>Two hemis</a>
+        <a href='gwas/index.html'>Manhattan</a>
+        <a href='scatter/index.html'>Scatter</a> (just one measure)
+        <a href='similarity/index.html'>Similarity</a> (just one measure)
+        """
+
+
 def deploy():
     """ Take all the disparate apps, and create a directory structure that works
     on a static webserver with no urlconf."""
@@ -81,15 +90,7 @@ def deploy():
     symlink('plots/similarity.html', 'deploy/similarity/index.html')
 
     def serve():
-        @app.route('/')
-        def serve_index():
-            return """
-                <a href='index.html.html'>Old poster</a>
-                <a href='brain/index.html'>Two hemis</a>
-                <a href='gwas/index.html'>Manhattan</a>
-                <a href='scatter/index.html'>Scatter</a> (just one measure)
-                <a href='similarity/index.html'>Similarity</a> (just one measure)
-                """
+        app.route('/')(serve_index)
 
         @app.route('/<path:path>')
         def serve_brain_data(path):
@@ -105,13 +106,12 @@ def server_it():
 
     app = flask.Flask(__name__, static_url_path='/static')
 
-    @app.route('/')
-    def serve_poster():
-        return ""
+    app.route('/')(serve_index)
+
 
     @app.route('/brain/data/<path:path>')
     def serve_brain_data(path):
-        data_dir = 'data'
+        data_dir = 'generated/data'
         return flask.send_from_directory(data_dir, path)
 
     @app.route('/brain/<path:path>')
@@ -122,7 +122,7 @@ def server_it():
 
     @app.route('/gwas/<path:foo>/data/<path:path>')
     def serve_gwas_data(foo, path):
-        data_dir = 'data'
+        data_dir = 'generated/data'
         return flask.send_from_directory(data_dir, path)
 
     @app.route('/gwas/<path:path>')
@@ -139,4 +139,5 @@ if __name__ == "__main__":
     import webbrowser
 
     # threading.Timer(1.25, lambda: webbrowser.open('http://127.0.0.1:5000/gwas/manhattan/manhattan.html')).start()
-    deploy()
+    # deploy()
+    server_it()
