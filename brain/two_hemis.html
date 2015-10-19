@@ -27,8 +27,8 @@ Design:
     <script src="js/libs/angular.min.js"></script>
 
     <script src="js/brain.utils.js"></script>
-	<script src="js/brain.js"></script>
-	<script src="js/hemiplot.js"></script>
+    <script src="js/brain.js"></script>
+    <script src="js/poster.js"></script>
 </head>
 
 <body ng-app="navigator" ng-strict-di ng-controller="NavigateController">
@@ -82,40 +82,6 @@ Design:
         <div class='label'>Left Hemisphere</div>
 	</div>
 	<script>
-        var prefixes = {
-            desikan: { area: 'MRI_cort_area.ctx.', thickness: 'MRI_cort_thick.ctx.'},
-            destrieux: { area: 'Destrieux_area.', thickness: 'Destrieux_thickness.'}
-        }
-
-        function prefix2measure(prefix) {
-            for (var ai in prefixes) {
-                for (var mi in prefixes[ai]) {
-                    if (prefixes[ai][mi] == prefix)
-                        return mi
-                }
-            }
-        }
-
-        function measure2prefix(measure, atlas) {
-            return prefixes[atlas][measure]
-        }
-
-        function click_partner_function(partner_brain) {
-            return function(mesh) {
-                if (mesh) {
-                    // On click, select the same mesh in the "stats" brain.
-                    var other_mesh = partner_brain.selectMeshByName(mesh.name);
-                    partner_brain.objectPick(other_mesh);
-                }
-            }
-        }
-
-        function build_manifest_url(base_url, metadata) {
-                return base_url + '/' + metadata.subject + '/'
-                                + metadata.atlas + '/' + metadata.surf_type + '/'
-                                + metadata.prefix + 'lh_files_to_load.json';
-        }
-
         var app = angular.module('navigator', []);
 		app.controller('NavigateController', ['$scope', function($scope) {
 			// Object bound to the form. We "watch" this object below.
@@ -131,7 +97,7 @@ Design:
 			// Create the right hemi brain
 			$scope.stats_brain = new Brain({
                 divID: "plot-canvas",
-                manifest: $scope.manifest_url.replace('lh', 'rh'),
+                manifest_url: $scope.manifest_url.replace('lh', 'rh'),
                 callback: function(mesh) {
                     $scope.mesh = mesh;
                     $scope.$apply();
@@ -142,7 +108,7 @@ Design:
 			// Create the "brain" for navigation
             $scope.nav_brain = new Brain({
                 divID: "nav-brain",
-                manifest: $scope.manifest_url,
+                manifest_url: $scope.manifest_url,
                 callback: function(mesh) {
                     $scope.mesh = mesh;
                     $scope.$apply();
@@ -154,18 +120,15 @@ Design:
             // Use the relatively new watchCollection().
             $scope.$watchCollection("metadata", function( newValue, oldValue ) {
 				$scope.metadata.prefix = measure2prefix(newValue.measure, newValue.atlas);
-				var manifest_url = build_manifest_url('data', $scope.metadata);
-
-				if (manifest_url != $scope.manifest_url) {
-					$scope.manifest_url = manifest_url;
-
-					// Update the brains
-					if ($scope.nav_brain)
-						$scope.nav_brain.loadBrain($scope.manifest_url);
-					if ($scope.stats_brain)
-						$scope.stats_brain.loadBrain($scope.manifest_url.replace('lh', 'rh'));
-				}
+				$scope.manifest_url = build_manifest_url('data', newValue);
 			});
+            $scope.$watch('manifest_url', function(newValue, oldValue) {
+                // Update the brains
+                if ($scope.nav_brain)
+                    $scope.nav_brain.loadBrain({manifest_url: newValue});
+                if ($scope.stats_brain)
+                    $scope.stats_brain.loadBrain({manifest_url: newValue.replace('lh', 'rh')});
+            });
 		}]);
 	</script>
 </body>
