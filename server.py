@@ -27,6 +27,7 @@ from bokeh.util.string import encode_utf8
 
 def serve_index():
     return """
+        <a href='2014/index.html'>Old poster</a>
         <a href='brain/two_hemis.html'>Two hemis</a>
         <a href='gwas/index.html'>Manhattan</a>
         <a href='scatter/index.html'>Scatter</a> (just one measure)
@@ -131,6 +132,9 @@ def server_it():
         viz_dir = os.path.dirname(ping.viz.__file__)
         return flask.send_from_directory(viz_dir, path)
 
+    @app.route('/2014/<path:path>')
+    def serve_old(path):
+        return flask.send_from_directory('2014', path)
     app.debug = True
     app.run()
 

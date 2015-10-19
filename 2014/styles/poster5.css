@@ -9,7 +9,6 @@ body {
     height: 1080;
     background-color: #ffe;
     box-sizing: border-box;
-    overflow: hidden;
 }
 
 /* poster title */
@@ -35,9 +34,12 @@ body {
     float: left;
     box-sizing: border-box;
     text-align: center;
-    padding-bottom: 10px;
 }
 
+.poster-title .content .authors {
+    font-size: 28px;
+    margin-bottom: -5px;
+}
 .poster-title .content .authors {
     font-size: 28px;
 }
