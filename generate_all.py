@@ -32,7 +32,9 @@ def generate_manhattan():
             output_dir='generated/data', output_format='json')
 
 
-def generate_bokeh():
+def generate_scatter_bokeh():
+    import os
+
     from ping.ping.data import prefixes
     from ping.scripts.scatter import do_scatter
     from ping.scripts.similarity import do_similarity
@@ -40,19 +42,29 @@ def generate_bokeh():
     for atlas, measures in prefixes.items():
         # Generate area vs. thickness plots
         do_scatter(atlas=atlas, prefixes=[os.path.commonprefix(measures.values())],
-                   x_key='%s:AI:mean' % measures['area'],
-                   y_key='%s:AI:mean' % measures['thickness'],
+                   x_key='%s:_AI:mean' % measures['area'],
+                   y_key='%s:_AI:mean' % measures['thickness'],
                    data_dir='generated/data',
                    output_dir='generated/plots',
                    output_format='bokeh')
 
         for measure, prefix in measures.items():
             # Generate scatter plot for given dataset / data point
-            do_scatter(atlas=atlas, prefixes=[prefix], x_key='AI:mean',
-                       y_key='AI:std', size_key='LH_PLUS_RH:mean',
+            do_scatter(atlas=atlas, prefixes=[prefix], x_key='_AI:mean',
+                       y_key='_AI:std', size_key='_LH_PLUS_RH:mean',
                        data_dir='generated/data',
                        output_dir='generated/plots', output_format='bokeh')
 
+
+def generate_similarity_bokeh():
+    import os
+
+    from ping.ping.data import prefixes
+    from ping.scripts.scatter import do_scatter
+    from ping.scripts.similarity import do_similarity
+
+    for atlas, measures in prefixes.items():
+        for measure, prefix in measures.items():
             # Generate similarity matrix for given dataset / data point
             do_similarity(atlas=atlas, prefixes=[prefix],
                           metric='partial-correlation', measures=['Asymmetry Index'],
@@ -60,7 +72,20 @@ def generate_bokeh():
                           output_dir='generated/plots', output_format='bokeh')
 
 
+def generate_similarity_json():
+    from ping.ping.data import prefixes
+    from ping.scripts.similarity import do_similarity
+    for atlas, measures in prefixes.items():
+        for measure, prefix in measures.items():
+            do_similarity(atlas=atlas, prefixes=[prefix],
+                          metric='partial-correlation', measures=['Asymmetry Index'],
+                          data_dir='generated/data',
+                          output_dir='generated/data/fsaverage/' + atlas,
+                          output_format='json')
+
 if __name__ == '__main__':
-    generate_all_brains()
-    generate_manhattan()
-    generate_bokeh()
+    # generate_all_brains()
+    # generate_manhattan()
+    # generate_scatter_bokeh()
+    # generate_similarity_bokeh()
+    generate_similarity_json()
