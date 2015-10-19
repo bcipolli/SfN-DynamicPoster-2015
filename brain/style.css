@@ -87,7 +87,8 @@ body {
 	padding: 15px;
 }
 
-#plot-canvas, #nav-brain, #nav-brain1, #nav-brain2, #nav-brain3{
+#plot-canvas, #nav-brain, #nav-brain1, #nav-brain2, #nav-brain3,
+#master-brain, #slave-brain {
 	margin: 10px;
 	padding: 10px;
 	width: 400px;

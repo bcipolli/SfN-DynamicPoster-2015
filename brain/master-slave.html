@@ -1,0 +1,135 @@
+<!--
+Design:
+    + brain.js : service for showing a clickable, colored brain.
+    + navigator.js : controller for the brain navigator
+      => depends on brain.js
+    + plotter.js : controller for the plotting
+      => must be told what function to use to plot, in the constructor.
+      => function may depend on brain.js, but controller does NOT
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Brain Navigator | Roy G. BIV</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+    <script src="js/libs/three.min.js"></script>
+    <script src="js/libs/Projector.js"></script>
+    <script src="js/libs/Detector.js"></script>
+    <script src="js/libs/TrackballControls.js"></script>
+    <script src="js/libs/VTKLoader.js"></script>
+    <script src="js/libs/jquery.min.js"></script>
+    <script src="js/libs/d3.min.js"></script>
+    <script src="js/libs/box.js"></script>
+    <script src="js/libs/sprintf.js"></script>
+    <script src="js/libs/angular.min.js"></script>
+
+    <script src="js/brain.utils.js"></script>
+    <script src="js/brain.js"></script>
+    <script src="js/hemi-plotter.js"></script>
+    <script src="js/poster.js"></script>
+</head>
+
+<body ng-app="navigator" ng-strict-di ng-controller="NavigateController">
+    <div id="right-container">
+        <div id="right-header">
+            <h1>Surface asymmetries</h1>
+            <div id="nav_label">
+                <div style="float: left">
+                </div>
+                <div style="float: left; overflow: hidden; width: 550px;">
+                    {{ mesh.name }}
+                    <br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ mesh.value * 100 | number: 2 }}% asymmetric
+                </div>
+                <br />
+                <br />
+                &nbsp;
+                <br />
+                &nbsp;
+                <br />
+                Shift+click to select a brain area.
+            </div>
+            <div id="master-brain">
+            </div>
+            <div class='label'>Asymmetry Index</div>
+        </div>
+    </div>
+    <div id="left-container">
+        <div id="left-header">
+            <div id="demo-links">other demos: <a href="index.html">Box plot</a></div>
+            <div id="selector">
+                <div>
+                    <span class="selection-label">Surface:</span>
+                    <input ng-model='metadata.surf_type' type="radio" name="surf_type" value="pial"></input><span>Pial</span>
+                    <input ng-model='metadata.surf_type' type="radio" name="surf_type" value="inflated" {% if $scope.mesh %}checked{% endif %}><span>Inflated</span>
+                </div>
+                <div>
+                    <span class="selection-label">Atlas:</span>
+                    <input ng-model='metadata.atlas' type="radio" name="atlas" value="desikan"></input><span>Desikan<br/>(36 ROIs)</span>
+                    <input ng-model='metadata.atlas' type="radio" name="atlas" value="destrieux"></input><span>Destrieux<br/>(76 ROIs)</span>
+                </div>
+                <div>
+                    <span class="selection-label">Measure:</span>
+                    <input ng-model='metadata.measure' type="radio" name="measure" value="thickness"></input><span>Thickness</span>
+                    <input ng-model='metadata.measure' type="radio" name="measure" value="area"><span>Surface area</span>
+                </div>
+            </div>
+        </div>
+        <div id="slave-brain">
+        </div>
+        <div class='label'>Partial correlation</div>
+    </div>
+    <script>
+        function build_data_url(base_url, metadata) {
+            return base_url + '/' + metadata.subject + '/'
+                            + metadata.atlas + '/'
+                            + metadata.prefix + '.json';
+        }
+        var app = angular.module('navigator', []);
+        app.controller('NavigateController', ['$scope', function($scope) {
+            // Object bound to the form. We "watch" this object below.
+            $scope.metadata = {
+                subject: 'fsaverage',
+                atlas: 'destrieux',
+                surf_type: 'pial',
+                prefix: 'Destrieux_area.',
+                measure: 'area'
+            };
+            $scope.manifest_url = build_manifest_url('data', $scope.metadata);
+            $scope.data_url = build_data_url('data', $scope.metadata);
+
+            // Create the right hemi brain
+            $scope.plotter = new HemiPlotter({
+                divIDs: ["master-brain", "slave-brain"],
+                manifest_url: $scope.manifest_url,
+                data_url: $scope.data_url,
+                callback: function(mesh) {
+                    // Show the mesh info
+                    $scope.mesh = mesh;
+                    $scope.$apply();
+                }
+            });
+
+            // Use the relatively new watchCollection().
+            $scope.$watchCollection("metadata", function( newValue, oldValue ) {
+                $scope.metadata.prefix = measure2prefix(newValue.measure, newValue.atlas);
+
+                manifest_url = build_manifest_url('data', $scope.metadata);
+                data_url = build_data_url('data', $scope.metadata);
+                if (manifest_url != $scope.manifest_url) {
+                    $scope.manifest_url = manifest_url;
+                    if (data_url != $scope.data_url)
+                        $scope.data_url = data_url;
+                    $scope.plotter.loadBrains({
+                        manifest_url: $scope.manifest_url,
+                        data_url: $scope.data_url
+                    });
+                }
+            });
+        }]);
+    </script>
+</body>
+</html>
