@@ -28,8 +28,9 @@ $(function() {
             + "</div>");
         // Generate at http://www.qr-code-generator.com/
         title_div.append("<div class='spacer qrcode'>"
-            + "<div class='download-text'>Access online now!</div>"
-            + "<img src='" + d["qrcode"] + "' /></div>");
+            + "<div class='download-text'>Scan to access online now,</div>"
+            + "<div><img src='" + d["qrcode"] + "' /></div>"
+            + "<div class='download-text'>or visit <a href='http://tinyurl.com/sfn15-asymmetry'>tinyurl.com/sfn15-asymmetry</a>!</div>");
     });
 
     $('.section').each(function(idx) {

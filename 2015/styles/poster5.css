@@ -31,7 +31,7 @@ body {
 .poster-title .content {
     width: 1100px;
     float: left;
-    padding: 0px 5px 0px 5px;
+    padding: 0px 5px 0px 205px;
     box-sizing: border-box;
 }
 
@@ -59,7 +59,7 @@ body {
 }
 
 .poster-title .spacer {
-    width: 498px;
+    width: 348px;
     height: 170px; /* why? */
     float: left;
     box-sizing: border-box;
@@ -67,12 +67,12 @@ body {
 
 .poster-title .qrcode {
     margin-left: 65px;
-    width: 200px;
+    width: 350px;
     height: 130px;
 }
 .poster-title .qrcode img {
-    max-width: 130px;
-    max-height: 130px;
+    max-width: 100px;
+    max-height: 100px;
     box-sizing: border-box;
     margin: 0px auto 0px auto;
 }
@@ -80,7 +80,8 @@ body {
 .download-text {
     font-size: 20px;
     font-weight: bold;
-    margin-bottom: 5px;
+    overflow: hidden;
+    hieght: 20px;
 }
 
 

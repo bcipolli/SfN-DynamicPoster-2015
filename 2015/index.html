@@ -11,168 +11,14 @@
     <link href='styles/libs/jquery-ui.css' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="scripts/libs/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="scripts/libs/jquery-ui.js"></script>
+    <script src="../brain/js/libs/sprintf.js"></script>
+    <script src="../brain/js/libs/angular.min.js"></script>
 
     <!-- create poster events ASAP -->
     <link href='styles/stuff.css' rel='stylesheet' type='text/css'>
     <link href='styles/poster5.css' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="scripts/poster-elements.js"></script>
-
-    <!-- roygbiv -->
-    <!--link rel="stylesheet" type="text/css" href="/brain/css/style.css" /-->
-    <style>
-        #header_n_label, #right-header {
-            float: left;
-            left: 0px;
-            margin: auto;
-            text-align: center;
-        }
-
-        #nav_label {
-            background-color:#000;
-            opacity:0.5;
-            padding:10px;
-            text-align:left;
-            color:white;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        #left-header, #right-header {
-            width: 350px;
-            height: 150px;
-            margin: auto;
-            padding: 15px;
-        }
-
-        #plot-canvas, #nav-brain, #nav-brain1, #nav-brain2, #nav-brain3,
-        #master-brain, #slave-brain {
-            margin: 10px;
-            padding: 10px;
-            width: 400px;
-            height: 350px;
-            background-color: #333;
-            padding: 5px;
-            border-radius: 25px;
-        }
-    </style>
-    <script src="../brain/js/libs/three.min.js"></script>
-    <script src="../brain/js/libs/Projector.js"></script>
-    <script src="../brain/js/libs/Detector.js"></script>
-    <script src="../brain/js/libs/TrackballControls.js"></script>
-    <script src="../brain/js/libs/VTKLoader.js"></script>
-    <!--script src="js/libs/jquery.min.js"></script-->
-    <script src="../brain/js/libs/sprintf.js"></script>
-    <script src="../brain/js/libs/angular.min.js"></script>
-
-    <script src="../brain/js/brain.utils.js"></script>
-    <script src="../brain/js/brain.js"></script>
-    <script src="../brain/js/hemi-plotter.js"></script>
-    <script src="../brain/js/poster.js"></script>
-
-    <script>
-        var value_keys = {master: 'pc', slave: 'mean'};
-
-        function build_pca_data_url(base_url, metadata) {
-            return base_url + '/' + metadata.subject + '/'
-                            + metadata.atlas + '/'
-                            + metadata.prefix + '_similarity.json';
-        }
-        $(function() {
-            $('#section3').on('click', function() { setTimeout(function() {
-                $scope = window.my_scope;
-                if ($scope.pca_plotter !== undefined)
-                    return;
-
-                // Create the right hemi brain
-                $scope.pca_plotter = new HemiPlotter({
-                    divIDs: ["master-brain", "slave-brain"],
-                    manifest_url: $scope.manifest_url,
-                    data_url: $scope.pca_data_url,
-                    value_keys: value_keys || null,
-                    callback: function(mesh) {
-                        // Show the mesh info
-                        $scope.mesh = mesh;
-                        $scope.$apply();
-                    }
-                });
-
-                // Use the relatively new watchCollection().
-                $scope.$watchCollection("metadata", function( newValue, oldValue ) {
-                    $scope.metadata.prefix = measure2prefix(newValue.measure, newValue.atlas);
-
-                    manifest_url = build_manifest_url('../brain/data', $scope.metadata);
-                    data_url = build_pca_data_url('../brain/data', $scope.metadata);
-                    if (manifest_url != $scope.manifest_url) {
-                        $scope.manifest_url = manifest_url;
-                        if (data_url != $scope.pca_data_url)
-                            $scope.pca_data_url = data_url;
-                        $scope.pca_plotter.loadBrains({
-                            manifest_url: $scope.manifest_url,
-                            data_url: $scope.pca_data_url
-                        });
-                    }
-                });
-            })});
-        });
-    </script>
-
-    <script>
-        $(function() {
-            $('#section2').on('click', function() { setTimeout(function() {
-                $scope = window.my_scope;
-                if ($scope.stats_brain !== undefined)
-                    return;
-
-                // Create the right hemi brain
-                $scope.stats_brain = new Brain({
-                    divID: "plot-canvas",
-                    manifest_url: $scope.manifest_url.replace('thickness', 'area').replace('thick', 'area'),
-                    callback: function(mesh) {
-                        $scope.mesh = mesh;
-                        $scope.$apply();
-                        click_partner_function($scope.nav_brain)(mesh);
-                    }
-                });
-
-                // Create the "brain" for navigation
-                $scope.nav_brain = new Brain({
-                    divID: "nav-brain",
-                    manifest_url: $scope.manifest_url,
-                    callback: function(mesh) {
-                        $scope.mesh = mesh;
-                        $scope.$apply();
-                        click_partner_function($scope.stats_brain)(mesh);
-                    }
-                });
-
-                // Use the relatively new watchCollection().
-                $scope.$watchCollection("metadata", function( newValue, oldValue ) {
-                    console.log('b')
-                    $scope.metadata.prefix = measure2prefix(newValue.measure, newValue.atlas);
-                    $scope.manifest_url = build_manifest_url('../brain/data', newValue);
-                });
-                $scope.$watch('manifest_url', function(newValue, oldValue) {
-                    console.log('a')
-                    // Update the brains
-                    if ($scope.nav_brain)
-                        $scope.nav_brain.loadBrain({manifest_url: newValue});
-                    if ($scope.stats_brain)
-                        $scope.stats_brain.loadBrain({manifest_url: newValue.replace('thickness', 'area').replace('thick', 'area')});
-                });
-            }, 25)});
-        });
-    </script>
-
-    <!-- gwas -->
-
-    <!-- Le styles -->
-    <!--link href="/gwas/css/libs/bootstrap.css" rel="stylesheet">
-    <link href="/gwas/css/libs/bootstrap-responsive.css" rel="stylesheet"-->
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link href="../gwas/css/libs/jquery-ui.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="scripts/poster-event-bindings.js"></script>
     <style>
         #some_id {
             width: 100%;
@@ -210,40 +56,17 @@
             border: 0;
             overflow: hidden;
             width: 625px;
-            height: 700px;
+            height: 800px;
             float: left;
         }
-    </style>
-    <!--link href="/gwas/css/manhattan.css" rel="stylesheet" type="text/css"-->
 
-    <!--script src="/gwas/js/libs/jquery.min.js"></script-->
-    <!--script src="js/libs/jquery-ui.min.js"></script-->
-    <script src="../gwas/js/libs/highcharts.js"></script>
-    <script src="../gwas/js/libs/drilldown.js"></script>
-    <script src="../gwas/js/manhattan.js"></script>
-    <script>
-        function show_gwas() {
-            if (window.mhp !== undefined)
-                return;
-
-            window.mhp = new ManhattanPlot({
-                gwas_url: '../gwas/data/GWAS_MRI_cort_area_ctx_frontalpole_AI__Age_At_IMGExam.json',
-                chrom_url: '../gwas/data/chrom_locs.json',
-                snps_url: '../gwas/data/snps_all.json',
-                divID: 'chart_some_id',
-                title: 'GWAS on frontal pole cortical surface area asymmetry',
-                subtitle: 'hit on STK31'
-            });
+        .content p {
+            font-size: 24pt;
         }
-        $(function() {
-            $('#section4').on('click', show_gwas);
-        });
-    </script>
-
-    <!-- main poster -->
-    <script type="text/javascript" src="scripts/poster-event-bindings.js"></script>
+    </style>
 </head>
-<body ng-app="navigator" ng-strict-di ng-controller="NavigateController">
+
+<body data-ng-app="navigator" data-ng-strict-di data-ng-controller="NavigateController">
 <div id="poster">
 
     <!-- title bar -->
@@ -319,10 +142,10 @@
             data-title="Univariate results"
             data-blurb="
                 <ul>
-                    <li><a href='#typical-asymmetry'>We found typical asymmetries.</a></li>
-                    <li><a href='#few-differences'>Few differences over developmental, gender, handedness.</a></li>
-                    <li><a href='#larger-asymmetries'>Larger asymmetries are more variable, from smaller areas.</a></li>
-                    <li><a href='#no-cross-correlation'>No relationship in asymmetries of surface area and thickness.</a></li>
+                    <li><a href='javascript:goto(&quot;typical-asymmetry&quot;);'>We found typical asymmetries.</a></li>
+                    <li><a href='javascript:goto(&quot;few-differences&quot;);'>Few differences over developmental, gender, handedness.</a></li>
+                    <li><a href='javascript:goto(&quot;larger-asymmetries&quot;);'>Larger asymmetries are more variable, from smaller areas.</a></li>
+                    <li><a href='javascript:goto(&quot;no-cross-correlation&quot;);'>No relationship in asymmetries of surface area and thickness.</a></li>
                 </ul>
             ">
             <div class="content-pane">
@@ -352,49 +175,14 @@
                             </ul>
                         </p>
                     </div>
-                    <div id="right-container">
-                        <div id="right-header">
-                                {{ mesh.name }}
-                                <br/>
-                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ mesh.value * 100 | number: 2 }}% asymmetric
-                                <br/>
-                                <span style="color: red; font-weight: bold">Red: LH dominant</span><br/>
-                                <span style="color: blue; font-weight: bold">Blue: RH dominant</span>
-                        </div>
-                        <div class='label'>Surface Area</div>
-                        <div id="plot-canvas" class="brain">
-                        </div>
-                    </div>
-                    <div id="left-container">
-                        <div id="left-header">
-                        </div>
-                        <div class='label'>Thickness</div>
-                        <div id="nav-brain" class="brain">
-                        </div>
-                    </div>
-
-                    <script>
-                        var app = angular.module('navigator', []);
-                        app.controller('NavigateController', ['$scope', function($scope) {
-                            // Object bound to the form. We "watch" this object below.
-                            $scope.metadata = {
-                                subject: 'fsaverage',
-                                atlas: 'desikan',
-                                surf_type: 'inflated',
-                                prefix: 'MRI_cort_thick.ctx.',
-                                measure: 'thickness'
-                            };
-                            $scope.manifest_url = build_manifest_url('../brain/data', $scope.metadata);
-
-                            window.my_scope = $scope;
-                        }]);
-                    </script>
+                    <iframe ng-if="cur_resource == 'typical-asymmetry'" ng-src='../brain/area_and_thickness.html' style="width:1250px; height: 550px;">
+                    </iframe>
                 </div><!-- subsection -->
 
                 <div class='subsection'><a name="few-differences"></a>
                     <div class='content'>
                         <p>
-                        regression plots go here. click on a brain and get a plot.
+                            Regression plots go here. click on a brain and get a plot.
                         </p>
                     </div>
                 </div>
@@ -402,11 +190,11 @@
                 <div class='subsection'><a name="larger-asymmetries"></a>
                     <div class='content'>
                         <p>
-                            scatter of
+                            Scatter plots of mean asymmetry index vs. std asymmetry index.
                         </p>
-                        <iframe ng-src='../plots/MRI_cort_area.ctx._AI:mean-_AI:std-_LH_PLUS_RH:mean-scatter.html'>
+                        <iframe ng-if="cur_resource == 'larger-asymmetries'" ng-src='../plots/MRI_cort_area.ctx._AI:mean-_AI:std-_LH_PLUS_RH:mean-scatter.html'>
                         </iframe>
-                        <iframe ng-src='../plots/MRI_cort_thick.ctx._AI:mean-_AI:std-_LH_PLUS_RH:mean-scatter.html'>
+                        <iframe ng-if="cur_resource == 'larger-asymmetries'" ng-src='../plots/MRI_cort_thick.ctx._AI:mean-_AI:std-_LH_PLUS_RH:mean-scatter.html'>
                         </iframe>
                     </div>
                 </div>
@@ -414,9 +202,10 @@
                 <div class='subsection'><a name="no-cross-correlation"></a>
                     <div class='content'>
                         <p>
-                        <iframe ng-src='../plots/MRI_cort_area.ctx.:_AI:mean-MRI_cort_thick.ctx.:_AI:mean-nosz-scatter.html' >
-                        </iframe>
+                            There is no correlation between surface area and thickness.
                         </p>
+                        <iframe data-ng-if="cur_resource == 'no-cross-correlation'" data-ng-src='../plots/MRI_cort_area.ctx.:_AI:mean-MRI_cort_thick.ctx.:_AI:mean-nosz-scatter.html' style="margin-left: 300px;" >
+                        </iframe>
                     </div>
                 </div>
 
@@ -436,29 +225,39 @@
             data-title="Multivariate results"
             data-blurb="
                 <ul>
-                    <li><a href='#partial-correlation'>Partial correlation shows mostly local covariance.</a></li>
-                    <li><a href='#pca-not-a-lot'>PCA suggests few relationships between asymmetries.</a></li>
-                    <li><a href='#pca-fontal-pole'>PCA suggests that frontal pole stands out alone.</a></li>
+                    <li><a href='javascript:goto(&quot;partial-correlation&quot;);'>Partial correlation shows mostly local covariance.</a></li>
+                    <li><a href='javascript:goto(&quot;pca-not-a-lot&quot;);'>PCA suggests few relationships between asymmetries.</a></li>
+                    <li><a href='javascript:goto(&quot;pca-fontal-pole&quot;);'>PCA suggests that frontal pole stands out alone.</a></li>
                 </ul>">
             <div class="content-pane" style="width: 100%; float: left;">
 
                 <div class='subsection'><a name="partial-correlation"></a>
-                    <div>
-                        <div class='label'>Navigator</div>
-                        <div id="master-brain">
-                        </div>
+                    <div class='content'>
+                        <!--p>
+                            Similarity matrix
+                        </p>
+                        <iframe data-ng-if="cur_resource == 'partial-correlation'" data-ng-src='../brain/similarity-slave.html' style="width: 1300px; height: 550px;" >
+                        </iframe-->
                     </div>
-                    <div>
-                        <div class='label'>Partial correlation Map</div>
-                        <div id="slave-brain">
-                        </div>
+
+                    <div class='content'>
+                        <p>
+                            Scatter plots of mean asymmetry index vs. std asymmetry index.
+                        </p>
+                        <iframe ng-if="cur_resource == 'partial-correlation'" ng-src='../plots/MRI_cort_area.ctx._AI:mean-_AI:std-_LH_PLUS_RH:mean-scatter.html'>
+                        </iframe>
+                        <iframe ng-if="cur_resource == 'partial-correlation'" ng-src='../plots/MRI_cort_thick.ctx._AI:mean-_AI:std-_LH_PLUS_RH:mean-scatter.html'>
+                        </iframe>
                     </div>
+
                 </div>
 
 
-                <div class='subsection'><a name="pca-ont-a-lot"></a>
+                <div class='subsection'><a name="pca-not-a-lot"></a>
                     <div class='content'>
                         <p>
+                        <iframe data-ng-if="cur_resource == 'pca-not-a-lot'" data-ng-src='../brain/pca-slave.html' style="width: 1300px; height: 550px;" >
+                        </iframe>
                         </p>
                     </div>
                 </div>
@@ -481,21 +280,18 @@
             data-title="Genetic results"
             data-blurb="
                 <ul>
-                    <li><a href='#stk31-gwas'>Genetic 'hit' for frontal pole surface area</a></li>
-                    <li><a href='#stk31-gwas'>STK31 explains 3% variance.</a></li>
-                    <li><a href='#stk31-gwas'>Also hit on PC0 (STK31).</a></li>
-                    <li><a href='#stk31-gwas'>No genetic hits on others tested.</a></li>
+                    <li><a href='javascript:goto(&quot;stk31-gwas&quot;);'>Genetic 'hit' for frontal pole surface area</a></li>
+                    <li><a href='javascript:goto(&quot;stk31-gwas&quot;);'>STK31 explains 3% variance.</a></li>
+                    <li><a href='javascript:goto(&quot;stk31-gwas&quot;);'>Also hit on PC0 (STK31).</a></li>
+                    <li><a href='javascript:goto(&quot;stk31-gwas&quot;);'>No genetic hits on others tested.</a></li>
                 </ul>
             ">
             <div class="content-pane" style="position: relative;">
                 <div class='subsection'><a name="stk31-gwas"></a>
-                    <div id="some_id" style="width:1250px">
-                        N: 1000, List of covariates: Age
-                        <div class="manhattan" id="chart_some_id">
-                        </div>
-                    </div>
-
                     <div class='content'>
+                        <iframe data-ng-if="cur_resource == 'stk31-gwas'" data-ng-src='../gwas/index.html' style="width: 1300px; height: 450px;" >
+                        </iframe>
+
                         <p>
                         Serine Threonine Kinase 31
                         <ul>
@@ -554,20 +350,41 @@
             <div id="selector">
                 <div class='selector-type'>
                     <span class="selection-label">Surface:</span>
-                    <input ng-model='metadata.surf_type' type="radio" name="surf_type" value="pial"></input><span>Pial</span>
-                    <input ng-model='metadata.surf_type' type="radio" name="surf_type" value="inflated" {% if $scope.mesh %}checked{% endif %}><span>Inflated</span>
+                    <input data-ng-model='metadata.surf_type' type="radio" name="surf_type" value="pial"></input><span>Pial</span>
+                    <input data-ng-model='metadata.surf_type' type="radio" name="surf_type" value="inflated" {% if $scope.mesh %}checked{% endif %}><span>Inflated</span>
                 </div>
                 <div class='selector-type'>
                     <span class="selection-label">Atlas:</span>
-                    <input ng-model='metadata.atlas' type="radio" name="atlas" value="desikan"></input>
+                    <input data-ng-model='metadata.atlas' type="radio" name="atlas" value="desikan"></input>
                     <span class='input-label'>Desikan (36 ROIs)</span>
 
-                    <input ng-model='metadata.atlas' type="radio" name="atlas" value="destrieux"></input>
+                    <input data-ng-model='metadata.atlas' type="radio" name="atlas" value="destrieux"></input>
                     <span class='input-label'>Destrieux (76 ROIs)</span>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <script>
+        var app = angular.module('navigator', []);
+        app.controller('NavigateController', ['$scope', function($scope) {
+            // Object bound to the form. We "watch" this object below.
+            $scope.metadata = {
+                subject: 'fsaverage',
+                atlas: 'desikan',
+                surf_type: 'inflated',
+                prefix: 'MRI_cort_thick.ctx.',
+                measure: 'thickness'
+            };
+
+            $scope.resources = [];
+            $scope.cur_resource = null;
+            window.scope = $scope;
+
+            // Use the relatively new watchCollection().
+            $scope.$watchCollection("metadata", function( newValue, oldValue ) {
+                //$('iframe').each(function(ifr) { console.log(ifr.data()); });
+            });
+        }]);
+    </script></div>
 </body>
 </html>
