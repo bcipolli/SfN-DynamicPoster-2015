@@ -9,6 +9,12 @@ body {
     height: 1080;
     background-color: #ffe;
     box-sizing: border-box;
+    border: 1px solid black;
+}
+
+/* poster title */
+.poster-title, #poster-footer, .section {
+    background-color: #7af;
 }
 
 /* poster title */
@@ -16,10 +22,10 @@ body {
     padding: 10px 10px 0px 10px;
     width: 100%;
     height: 185px;
-    background-color: #acf;
     box-sizing: border-box;
     text-align: center;
     border-bottom: 5px dotted black;
+    overflow: hidden;
 }
 
 .poster-title .content {
@@ -30,7 +36,8 @@ body {
 }
 
 .poster-title .content .title {
-    font-size: 40px;
+    font-size: 36px;
+    padding: 0px 100px 10px 100px;
     float: left;
     box-sizing: border-box;
     text-align: center;
@@ -38,25 +45,31 @@ body {
 
 .poster-title .content .authors {
     font-size: 28px;
-    margin-bottom: -5px;
-}
-.poster-title .content .authors {
-    font-size: 28px;
 }
 
-.poster-title .spacer {
-    width: 400px;
-    height: 170px; /* why? */
-    float: left;
-    box-sizing: border-box;
+.poster-title .content .affiliations {
+    font-size: 12pt;
 }
 
 .poster-title .logo img {
+    margin-left: -1px;
     max-width: 400px;
     max-height: 160px;
     float: left;
 }
 
+.poster-title .spacer {
+    width: 498px;
+    height: 170px; /* why? */
+    float: left;
+    box-sizing: border-box;
+}
+
+.poster-title .qrcode {
+    margin-left: 65px;
+    width: 200px;
+    height: 130px;
+}
 .poster-title .qrcode img {
     max-width: 130px;
     max-height: 130px;
@@ -65,9 +78,9 @@ body {
 }
 
 .download-text {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 
@@ -76,7 +89,7 @@ body {
 #poster .section {
     width: 850px;
     height: 325px;
-    padding: 0px;
+    padding-top: 10px;
     margin: 60px 50px 80px 50px;
     box-sizing: border-box;
     overflow:hidden;
@@ -108,28 +121,37 @@ body {
     text-align: center;
     font-weight: bold;
     width: 100%;
-    padding: 10px;
+    padding-top: 10px;
 }
 
 #poster .section .blurb {
-    padding: 25px 50px 25px 50px;
+    padding: 10px 50px 0px 50px;
     box-sizing: border-box;
+    font-size: 18pt;
 }
 
 #poster .section-button .blurb {
     padding: 20px;
+    font-size: 16pt;
 }
 
 #poster .section-button .title {
     font-size: 28px;
-    padding-top: 5px;
+    margin-bottom: -10px;
+    padding: 5px 0px 0px 0px;
     box-sizing: border-box;
+}
+
+#poster .section-button .number {
+    position: relative;
+    left: 3px;
+    top: 5px;
+    display: none;
 }
 
 /* poster main content */
 .section-buttons {
     width: 15%;
-    height: 795px;
     float: left;
     box-sizing: border-box;
 }
@@ -139,14 +161,7 @@ body {
 }
 
 .section-buttons-expanded .section {
-    background-color: #8af;
-}
-
-.section-button {
-    background-color: #acf;
-    border: 5px solid #acf; /*8af*/
-    padding: 10px;
-    box-sizing: border-box;
+    background-color: #7bf;
 }
 
 .main-content {
@@ -165,10 +180,8 @@ body {
     padding: 0px;
 }
 
-
 .section-summary-on, .main-content-on {
     background-color:transparent;
-    border: 5px solid transparent;
     box-sizing: border-box;
 }
 .section-summary-left-on {
@@ -181,7 +194,7 @@ body {
 }
 
 .section:hover {
-    background-color: #88f;
+    background-color: #9cf;
     cursor: pointer;
 }
 
@@ -201,16 +214,32 @@ body {
     float: left;
 }
 
+.section-button ul {
+    position: relative;
+    left: -10px;
+    top: -5px;
+}
+
+.section-buttons li {
+    border-radius: 15px;
+    padding: 10px;
+    margin: -10px;
+}
+
+.section-buttons li:hover {
+    background-color: yellow;
+}
 
 /* poster footer */
-.poster-footer {
-    background-color: #acf;
+#poster-footer {
     width: 100%;
-    height: 105px;
+    height: 98px;
     padding: 5px;
     float: left;
     box-sizing: border-box;
     display: none;
     border-top: 5px dotted black;
-    z-index: -1;
+    z-index: 100;
+    position: relative;
+    top: -3px;
 }

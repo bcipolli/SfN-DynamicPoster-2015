@@ -1,3 +1,11 @@
+function load_index() {
+    // Bring us back to the original page; clear all divs.
+    window.location.href = "#";
+    if ($('#poster-footer').is(":visible")) {
+        window.location.reload();
+    }
+}
+
 /* Builds the poster cover-page elements */
 $(function() {
 
@@ -12,14 +20,15 @@ $(function() {
 
         var title_div = $(this);
         var d = title_div.data();
-        title_div.append("<div class='spacer logo'><img src='" + d["logo"] + "' /></div>");
+        title_div.append("<div class='spacer logo'><a href='javascript:load_index()'><img src='" + d["logo"] + "' /></a></div>");
         title_div.append("<div class='content'>"
-            + "<div class='title'><a href='#' style='font-weight: normal; text-decoration: none; color: black'>" + d["title"] + "</a></div>"
+            + "<div class='title'><a href='javascript:load_index()' style='font-weight: normal; text-decoration: none; color: black'>" + d["title"] + "</a></div>"
             + "<div class='authors'>" + d["authors"] + "</div>"
             + "<div class='affiliations'>" + d["affiliations"] + "</div>"
             + "</div>");
+        // Generate at http://www.qr-code-generator.com/
         title_div.append("<div class='spacer qrcode'>"
-            + "<div class='download-text'>Download poster now!</div>"
+            + "<div class='download-text'>Access online now!</div>"
             + "<img src='" + d["qrcode"] + "' /></div>");
     });
 
@@ -56,9 +65,12 @@ $(function() {
 
         // Show the relevant details, and make the buttons active.
         $(this).on('click', function() {
-            $('.section-details').hide();
-            $("#" + details_div_id).show(500);
-            location.hash = "#b" + d['number'];
+            var div = $("#" + details_div_id)
+            if (!div.is(":visible")) {
+                $('.section-details').hide();
+                div.show(500);
+                location.hash = "#b" + d['number'];
+            }
         });
     });
 
@@ -81,7 +93,7 @@ $(function() {
         $('.section').toggleClass('section-button', true, ad_slow);
         $('.section').find(".blurb").hide();
         $('.section').find(".short-blurb").show();
-        $('.poster-footer').show(ad_slow, 'linear');
+        $('#poster-footer').show(ad_slow, 'linear');
     });
 
     $('.section').on('click', function(e) {
