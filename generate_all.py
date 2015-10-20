@@ -83,9 +83,23 @@ def generate_similarity_json():
                           output_dir='generated/data/fsaverage/' + atlas,
                           output_format='json')
 
+
+def generate_multivariate():
+    from ping.ping.data import prefixes
+    from ping.scripts.multivariate import do_multivariate
+
+    for atlas, measures in prefixes.items():
+        for measure, prefix in measures.items():
+            do_multivariate(prefixes=[prefix], atlas=atlas,
+                            data_dir='generated/data',
+                            output_dir='generated/data/fsaverage/' + atlas,
+                            output_format='json',
+                            verbose=0, pc_thresh=0.05)
+
 if __name__ == '__main__':
     # generate_all_brains()
     # generate_manhattan()
     # generate_scatter_bokeh()
     # generate_similarity_bokeh()
     generate_similarity_json()
+    # generate_multivariate()
