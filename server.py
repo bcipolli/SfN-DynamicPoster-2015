@@ -116,8 +116,6 @@ def server_it():
         data_dir = 'generated/data'
         return flask.send_from_directory(data_dir, path)
 
-    @app.route('/brain/js/<path:path>')
-    @app.route('/brain/css/<path:path>')
     @app.route('/brain/<path:path>')
     def serve_roygbiv_html(path):
         try:
@@ -125,8 +123,6 @@ def server_it():
         except Exception as e:
             import roygbiv
             viz_dir = os.path.join(os.path.dirname(roygbiv.__file__), 'web')
-            ext = os.path.splitext(os.path.basename(path))[1][1:]
-            path = os.path.join(ext, path)
             return flask.send_from_directory(viz_dir, path)
 
     @app.route('/gwas/<path:foo>/data/<path:path>')
