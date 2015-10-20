@@ -29,7 +29,7 @@ def serve_index():
     return """
         <a href='2014/index.html'>Old poster</a>
         <a href='brain/two_hemis.html'>Two hemis</a>
-        <a href='gwas/index.html'>Manhattan</a>
+        <a href='gwas/manhattan/manhattan.html'>Manhattan</a>
         <a href='scatter/index.html'>Scatter</a> (just one measure)
         <a href='similarity/index.html'>Similarity</a> (just one measure)
         """
@@ -125,16 +125,26 @@ def server_it():
             viz_dir = os.path.join(os.path.dirname(roygbiv.__file__), 'web')
             return flask.send_from_directory(viz_dir, path)
 
-    @app.route('/gwas/<path:foo>/data/<path:path>')
-    def serve_gwas_data(foo, path):
+    # GWAS app
+    @app.route('/gwas/data/<path:path>')
+    def serve_gwas_data(path):
         data_dir = 'generated/data'
         return flask.send_from_directory(data_dir, path)
+
+    @app.route('/gwas/')
+    @app.route('/gwas/index.html')
+    def serve_default():
+        import ping.viz
+        viz_dir = os.path.dirname(ping.viz.__file__)
+        man_dir = os.path.join(viz_dir, 'manhattan')
+        return flask.send_from_directory(man_dir, 'manhattan.html')
 
     @app.route('/gwas/<path:path>')
     def serve_gwas_html(path):
         import ping.viz
         viz_dir = os.path.dirname(ping.viz.__file__)
-        return flask.send_from_directory(viz_dir, path)
+        man_dir = os.path.join(viz_dir, 'manhattan')
+        return flask.send_from_directory(man_dir, path)
 
     @app.route('/2014/<path:path>')
     def serve_old(path):
