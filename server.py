@@ -87,10 +87,7 @@ def deploy():
         symlink(fil, os.path.join('deploy/gwas/data', os.path.basename(fil)))
 
     # scatter / similarity plots
-    mkdirp('deploy/scatter')
-    symlink('plots/scatter.html', 'deploy/scatter/index.html')
-    mkdirp('deploy/similarity')
-    symlink('plots/similarity.html', 'deploy/similarity/index.html')
+    symlink('generated/plots/', 'deploy/plots/')
 
     def serve():
         app.route('/')(serve_index)
@@ -147,6 +144,10 @@ def server_it():
         man_dir = os.path.join(viz_dir, 'manhattan')
         return flask.send_from_directory(man_dir, path)
 
+    # Scatter app
+    @app.route('/plots/<path:path>')
+    def serve_plot(path):
+        return flask.send_from_directory('generated/plots', path)
     @app.route('/2015/<path:path>')
     def serve_old(path):
         return flask.send_from_directory('2015', path)
