@@ -27,7 +27,7 @@ from bokeh.util.string import encode_utf8
 
 def serve_index():
     return """
-        <a href='2014/index.html'>Old poster</a>
+        <a href='2015/index.html'>Old poster</a>
         <a href='brain/two_hemis.html'>Two hemis</a>
         <a href='gwas/manhattan/manhattan.html'>Manhattan</a>
         <a href='scatter/index.html'>Scatter</a> (just one measure)
@@ -67,7 +67,7 @@ def deploy():
 
     # Poster
     mkdirp('deploy')
-    copytree('2014', 'deploy')
+    copytree('2015', 'deploy')
 
     # Brain
     mkdirp('deploy/brain')  # basedir
@@ -146,9 +146,9 @@ def server_it():
         man_dir = os.path.join(viz_dir, 'manhattan')
         return flask.send_from_directory(man_dir, path)
 
-    @app.route('/2014/<path:path>')
+    @app.route('/2015/<path:path>')
     def serve_old(path):
-        return flask.send_from_directory('2014', path)
+        return flask.send_from_directory('2015', path)
     app.debug = True
     app.run()
 
