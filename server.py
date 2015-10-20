@@ -73,7 +73,8 @@ def deploy():
     mkdirp('deploy/brain')  # basedir
     copytree(roygbiv_web_path, 'deploy/brain')
     shutil.copy('brain/two_hemis.html', 'deploy/brain/index.html')
-    shutil.copy('brain/style.css', 'deploy/brain/css/style.css')
+    copytree('brain/css/', 'deploy/brain/css/')
+    copytree('brain/js/', 'deploy/brain/js/')
     mkdirp('deploy/brain/data')
     symlink('generated/data/fsaverage', 'deploy/brain/data/fsaverage')  # data
 
