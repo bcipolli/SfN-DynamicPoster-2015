@@ -84,7 +84,7 @@ def deploy():
     symlink('deploy/gwas/manhattan.html', 'deploy/gwas/index.html')
     mkdirp('deploy/gwas/data')
     for fil in glob.glob('generated/data/*.json'):
-        symlink(fil, os.path.join('deploy/gwas', fil))  # data
+        symlink(fil, os.path.join('deploy/gwas/data', os.path.basename(fil)))
 
     # scatter / similarity plots
     mkdirp('deploy/scatter')
