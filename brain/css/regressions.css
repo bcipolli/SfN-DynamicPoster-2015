@@ -1,0 +1,4 @@
+#header_n_label { float: left; width:600px;}
+#plot-canvas { width:525px; height: 225px; background-color: #ccc }
+#plot-canvas img { width: 500px; }
+#nav-brain { float:left; margin: 75px 0px 0px 40px; height: 225px; }

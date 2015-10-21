@@ -1,15 +1,91 @@
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="Ben Cipollini">
     <title>SfN 2015: Cipollini &amp; Cottrell</title>
-    <link href='styles/libs/jquery-ui.css' rel='stylesheet' type='text/css'>
-    <link href='styles/stuff.css' rel='stylesheet' type='text/css'>
-    <link href='styles/poster5.css' rel='stylesheet' type='text/css'>
 
+    <!-- common -->
+    <link href='styles/libs/jquery-ui.css' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="scripts/libs/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="scripts/libs/jquery-ui.js"></script>
-    <script type="text/javascript" src="scripts/poster5.js"></script>
+    <script src="../brain/js/libs/sprintf.js"></script>
+    <script src="../brain/js/libs/angular.min.js"></script>
+
+    <!-- create poster events ASAP -->
+    <link href='styles/stuff.css' rel='stylesheet' type='text/css'>
+    <link href='styles/poster5.css' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="scripts/poster-elements.js"></script>
+    <script type="text/javascript" src="scripts/poster-event-bindings.js"></script>
+    <style>
+        #some_id {
+            width: 100%;
+            background-color: black;
+            x-display: none;
+        }
+        #chart_some_id {
+            width:100%;
+        }
+        #selector {
+            padding: 10px 0px 0px 0px;
+        }
+        .selector, .selector-type {
+            width: 700px;
+        }
+        #selector span {
+            width: 200px;
+            float: left;
+        }
+        #selector.selection-label{
+            width: 75px;
+            font-family: arial;
+            float:left;
+        }
+        #selector input {
+            margin: 3px 10px 0px 10px;
+            float: left;
+        }
+        .subsection {
+            margin-bottom: 500px;
+            width: 100%;
+        }
+
+        iframe {
+            border: 0;
+            overflow: hidden;
+            width: 625px;
+            height: 800px;
+            float: left;
+        }
+
+        .content p {
+            font-size: 20pt;
+            font-style: italic;
+        }
+
+        .content table {
+            margin-top: 15px;
+            border: 0px;
+            width: 100%;
+        }
+        .content table td {
+            font-size: 24pt;
+            font-weight: bold;
+            text-align: center;
+            width: 600px;
+        }
+
+        .content table td img {
+            width: 300px;
+            margin: 15px 150px 15px 150px;
+            border: 1px solid black;
+        }
+    </style>
 </head>
-<body>
+
+<body data-ng-app="navigator" data-ng-strict-di data-ng-controller="NavigateController">
 <div id="poster">
 
     <!-- title bar -->
@@ -30,10 +106,9 @@
             data-title="Cortical asymmetries: multivariate analysis"
             data-short-blurb="
                 <ul>
-                    <li>Used the <a href='http://pingstudy.ucsd.edu/'>PING</a> dataset; cross-sectional data, N=1400, ages 3-20</li>
-                    <li>We analyzed surface area &amp; thickness</li>
-                    <li><b>Asymmetry index:<br/>(LH - RH)/(LH + RH)</b></li>
-                    <li><i>Goal: look for relationships amongst asymmetries.</i></li>
+                    <li><a href='javascript:goto(&quot;ping&quot;);'>Used the PING dataset; cross-sectional data, N=1400, ages 3-20</a></li>
+                    <li><a href='javascript:goto(&quot;methods&quot;);'>We analyzed surface area &amp; thickness</a></li>
+                    <li><a href='javascript:goto(&quot;methods&quot;);'><i>Goal: look for relationships amongst asymmetries.</i></a></li>
                 </ul>"
             data-blurb="
                 <div style='width: 100%; float: left; position: relative; top: -5px;'>
@@ -54,22 +129,165 @@
                 </div>">
             <div class="content-pane" style="">
 
+                <div class='subsection'><a name="ping"></a>
+                    <div class='content'>
+                        <p>
+                            The PING study (Pediatric Imaging, Neuropsychology, and Genetics) is a mult-site cross-sectional study of over 1400 subjects ages 3-20. All MRI data were collected with methods for cross-site standardization.
+                        </p>
+                        <p>
+                            <table><tr>
+                                <td>
+                                    <a href="http://ping-dataportal.ucsd.edu/">PING portal: front-page</a>
+                                    <img if="cur_resource == 'ping'" src="images/ss/ss-ping.png" style="margin-bottom: 35px;"></img>
+                                </td>
+                                <td>
+                                    <a href="https://ping-dataportal.ucsd.edu/applications/DataExploration/">PING portal: data explorer</a>s
+                                    <img if="cur_resource == 'ping'" src="images/ss/ss-ping-portal.png"></img>
+                                </td>
+                            </tr></table>
+                        </p>
+
+                        <p>
+                            We have access to a data spreadsheet, focusing on
+                            developing open-source tools for data download, analysis, and visualization.
+                            We focus on cortical surfaces area and thickness (reconstructed for us).
+                        </p>
+                        <p>
+                            <table><tr>
+                                <td style="position: relative; top: -100px;">
+                                    Data are available as a spreadsheet.
+                                    <img if="cur_resource == 'ping'" src="images/ss/ss-spreadsheet.png"></img>
+                                </td>
+                                <td>
+                                    We develop open-source tools.
+                                    <img if="cur_resource == 'ping'" src="images/ss/ss-tools.png"></img>
+                                    <img style="position: relative; top: -100px; left: -120px;" if="cur_resource == 'ping'" src="images/logos/nibabel.png"></img>
+                                    <img style="position: relative; top: -250px; left: -120px;"  if="cur_resource == 'ping'" src="images/logos/nilearn.png"></img>
+                                </td>
+                            </tr></table>
+                        </p>
+                    </div>
+                </div>
+
+                <div class='subsection'><a name="methods"></a>
+                    <div class='content'>
+                        <p>
+                            Our main measure is asymmetry index: <span style="font-weight: bold; font-size: 28pt;">(LH - RH) / (LH + RH)</span>
+                        </p>
+                        <p>
+                            <table><tr>
+                                <td>
+                                    Higher left eyebrow: ++AI
+                                    <img if="cur_resource == 'methods'" src="images/the-rock-eyebrow-mirror.jpg"></img>
+                                </td>
+                                <td>
+                                    Higher right eyebrow: --AI
+                                    <img if="cur_resource == 'methods'" src="images/the-rock-eyebrow.jpg"></img>
+                                </td>
+                            </tr></table>
+                        </p>
+
+                        <p>
+                            We also look at covariance amongst asymmetries, using a partial correlation matrix and PCA.
+                        </p>
+                        <p>
+                            <table><tr>
+                                <td>
+                                    Typical: structure covariance
+                                    <img if="cur_resource == 'methods'" src="images/ss/ss-cov.png"></img>
+                                </td>
+                                <td>
+                                    Atypical: AI partial correlation
+                                    <img if="cur_resource == 'methods'" src="images/ss/ss-similarity.png"></img>
+                                </td>
+                            </tr></table>
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- box 2: ringo results -->
+        <!-- box 2: UNIVARIATE -->
         <div class="section section-summary"
             data-number="2"
             data-title="Univariate results"
             data-blurb="
                 <ul>
-                    <li>We found typical asymmetries.</li>
-                    <li>Few differences over developmental, gender, handedness.</li>
-                    <li>Larger asymmetries are more variable, from smaller areas.</li>
-                    <li>No relationship in asymmetries of surface area and thickness.</li>
-                </ul>
-            ">
-            <div class="content-pane" style="">
+                    <li><a href='javascript:goto(&quot;typical-asymmetry&quot;);'>We found typical asymmetries.</a></li>
+                    <li><a href='javascript:goto(&quot;few-differences&quot;);'>Few differences over developmental, gender, handedness.</a></li>
+                    <li><a href='javascript:goto(&quot;larger-asymmetries&quot;);'>Larger asymmetries are more variable, from smaller areas.</a></li>
+                    <li><a href='javascript:goto(&quot;no-cross-correlation&quot;);'>No relationship in asymmetries of surface area and thickness.</a></li>
+                </ul>">
+            <div class="content-pane">
+                <style>
+                    #right-container, #left-container,
+                    div.label {
+                        width: 45%;
+                        margin: 0px auto 0px auto;
+                    }
+                    #plot-canvas, #nav-brain {
+                        width: 500px;
+                    }
+
+                    div.content {
+                        width: 100%;
+                    }
+                </style>
+
+                <div class='subsection'><a name="typical-asymmetry"></a>
+                    <div class='content'>
+                        <p>
+                            We found typical asymmetries, such as:
+                            <ul>
+                                <li>Right frontal pole</li>
+                                <li>Left Broca's area &amp; transverse temporal</li>
+                                <li>Left Broca's area &amp; transverse temporal</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <iframe ng-if="cur_resource == 'typical-asymmetry'" ng-src='../brain/area_and_thickness.html' style="width:1250px; height: 550px;">
+                    </iframe>
+                </div><!-- subsection -->
+
+                <div class='subsection'><a name="few-differences"></a>
+                    <div class='content'>
+                        <p>
+                            Regression on asymmetry index over age doesn't show any changes
+                            over development. Results are similar when grouping by Gender (male/female) or handedness (left/right/mixed) or both.
+                        </p>
+                        <div style="margin-bottom: 10px;">
+                            <iframe ng-if="cur_resource == 'few-differences'" ng-src='../brain/regressions.html' style="width: 1075px; height: 325px; margin-left: 75px;">
+                            </iframe>
+                        </div>
+                        <div>
+                            <iframe ng-if="cur_resource == 'few-differences'" ng-src='../brain/regressions-thickness-handedness.html' style="width: 1075px; height: 325px; margin-left: 75px;">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <div class='subsection'><a name="larger-asymmetries"></a>
+                    <div class='content'>
+                        <p>
+                            Scatter plots of mean asymmetry index vs. std asymmetry index.
+                        </p>
+                        <iframe ng-if="cur_resource == 'larger-asymmetries'" ng-src='../plots/scatter/MRI_cort_area.ctx._AI:mean-_AI:std-_LH_PLUS_RH:mean-scatter.html'>
+                        </iframe>
+                        <iframe ng-if="cur_resource == 'larger-asymmetries'" ng-src='../plots/scatter/MRI_cort_thick.ctx._AI:mean-_AI:std-_LH_PLUS_RH:mean-scatter.html'>
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class='subsection'><a name="no-cross-correlation"></a>
+                    <div class='content'>
+                        <p>
+                            There is no correlation between surface area and thickness.
+                        </p>
+                        <iframe data-ng-if="cur_resource == 'no-cross-correlation'" data-ng-src='../plots/scatter/MRI_cort_area.ctx.:_AI:mean-MRI_cort_thick.ctx.:_AI:mean-nosz-scatter.html' style="margin-left: 300px;" >
+                        </iframe>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -80,34 +298,116 @@
 
     <div id="section-summary-right" class="section-buttons section-buttons-expanded">
 
-        <!--  -->
+        <!-- BOX 3: MULTIVARIATE -->
         <div class="section section-summary"
             data-number="3"
             data-title="Multivariate results"
             data-blurb="
                 <ul>
-                    <li>Partial correlation shows mostly local covariance.</li>
-                    <li>PCA suggests few relationships between asymmetries.</li>
-                    <li>PCA suggests that frontal pole stands out alone.</li>
+                    <li><a href='javascript:goto(&quot;partial-correlation&quot;);'>Partial correlation shows mostly local covariance.</a></li>
+                    <li><a href='javascript:goto(&quot;pca&quot;);'>PCA suggests few relationships between asymmetries.</a></li>
+                    <li><a href='javascript:goto(&quot;pca&quot;);'>PCA suggests that frontal pole stands out alone.</a></li>
                 </ul>">
             <div class="content-pane" style="width: 100%; float: left;">
+
+                <div class='subsection'><a name="partial-correlation"></a>
+                    <div class='content'>
+                        <p>
+                            Similarity matrix
+                        </p>
+                        <iframe data-ng-if="cur_resource == 'partial-correlation'" data-ng-src='../brain/similarity-slave.html' style="width: 1100px; height: 550px;" >
+                        </iframe>
+                    </div>
+
+                    <div class='content' style='margin-top: 100px;'>
+                        <iframe ng-if="cur_resource == 'partial-correlation'" ng-src='../plots/similarity/MRI_cort_area.ctx..html' style="width: 1000px; height: 1000px; margin-left: 250px; margin-bottom: 150px;">
+                        </iframe>
+                        <iframe ng-if="cur_resource == 'partial-correlation'" ng-src='../plots/similarity/MRI_cort_thick.ctx..html' style="width: 1000px; height: 1000px; margin-left: 250px;">
+                        </iframe>
+                    </div>
+
+                </div>
+
+
+                <div class='subsection'><a name="pca"></a>
+                    <div class='content'>
+                        <div style="float:left; margin-right: 15px;">
+                            <iframe data-ng-if="cur_resource == 'pca'" data-ng-src='../brain/pca-area.html' style="width: 600px; height: 650px;" >
+                        </iframe>
+                        </div>
+
+                        <div style="float:left">
+                                <iframe data-ng-if="cur_resource == 'pca'" data-ng-src='../brain/pca-thickness.html' style="width: 600px; height: 650px; " >
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>
 
-        <!--  -->
+        <!-- BOX 4: GENETICS -->
         <div class="section section-summary"
             data-number="4"
             data-title="Genetic results"
             data-blurb="
                 <ul>
-                    <li>Genetic 'hit' for frontal pole surface area</li>
-                    <li>STK31 explains 3% variance.</li>
-                    <li>Also hit on PC0 (STK31).</li>
-                    <li>No genetic hits on others tested.</li>
+                    <li><a href='javascript:goto(&quot;stk31-gwas&quot;);'>Genetic 'hit' for frontal pole surface area</a></li>
+                    <li><a href='javascript:goto(&quot;stk31-gwas&quot;);'>STK31 explains 3% variance.</a></li>
+                    <li><a href='javascript:goto(&quot;stk31-gwas&quot;);'>Also hit on PC0 (STK31).</a></li>
+                    <li><a href='javascript:goto(&quot;stk31-gwas&quot;);'>No genetic hits on others tested.</a></li>
                 </ul>
             ">
             <div class="content-pane" style="position: relative;">
+                <div class='subsection'><a name="stk31-gwas"></a>
+                    <div class='content'>
+                        <iframe data-ng-if="cur_resource == 'stk31-gwas'" data-ng-src='../gwas/index.html' style="width: 1300px; height: 450px; margin-top: 15px;" >
+                        </iframe>
+
+                        <p>
+                        Serine Threonine Kinase 31
+                            <ul>
+                                <li><a href='http://www.ncbi.nlm.nih.gov/gene/56164'>NIH</a> - "shows testis-specific expression"</li>
+                            </ul>
+                        </p>
+                        <!--p>
+                        <img width="1000" src="images/allen/allen-nhp.png"></img>
+                        <img width="1000" src="images/allen/allen-mouse .png"></img>
+                        <img width="1000" src="images/allen/allen-human-devel-age.png"></img>
+                        <img width="1000" src="images/allen/allen-human-devel-structure.png"></img>
+                        </p-->
+                        <p>
+                            <ul>
+                                <li><a href='http://mouse.brain-map.org/experiment/show/70302282'>Allen: mouse </a></li>
+                                <li><a href='http://human.brain-map.org/microarray/search/show?exact_match=false&search_term=stk31&search_type=gene'>Allen human brain</a></li>
+                                <li><a href='http://www.brainspan.org/rnaseq/searches?exact_match=false&search_term=stk31&search_type=gene'>Allen developing human brain</a> - active 16 pcw - 10 months.</li>
+                                <li><a href='http://www.blueprintnhpatlas.org/macrodissection/search/show?exact_match=false&search_term=stk31&search_type=gene'> - active "0 years" in NHP</a></li>
+                            </ul>
+                        </p>
+                    </div>
+                </div>
+
+                <div class='subsection'><a name="x"></a>
+                    <div class='content'>
+                    </div>
+                </div>
+
+
+                <div class='subsection'><a name="y"></a>
+                    <div class='content'>
+                        <p>
+                        </p>
+                    </div>
+                </div>
+
+
+                <div class='subsection'><a name="z"></a>
+                    <div class='content'>
+                        <p>
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -115,26 +415,62 @@
 
     <!-- footer -->
     <div id="poster-footer">
-        <div style="width:50%; height: 100%; float: left;">
+        <div style="width:80%; height: 100%; float: left;">
             <div style="float: left; margin-right: 25px; height: 100%; left: -50px">References:</div>
-            <div style="font-size: 18px">
-                    <li>Berbel, &amp; Innocenti. (1988). The devel. of the corpus callosum in cats. J of comparative neurol., 276(1).</li>
-                    <li>Faisal et al. (2008). Noise in the nervous system. Nature Rev. Neuro., 9(4).</li>
-                    <li>Lewis &amp; Elman. (2008). Growth-related neural reorg. &amp; the autism phenotype. Devel. Science, 11(1).</li>
-                    <li>Ringo et al. (1994). Time is of the essence. Cereb. Cortex, 4(4).</li>
+            <div style="font-size: 18px; position: relative; top: -20px; left: 10px;">
+                <ul>
+                    <li>Jernigan, T. L., et al. "The Pediatric Imaging, Neurocognition, and Genetics (PING) Data Repository." NeuroImage (2015).</li>
+                    <li>Van Essen, David C., et al. "Parcellations and hemispheric asymmetries of human cerebral cortex analyzed on surface-based atlases." Cerebral cortex 22.10 (2012): 2241-2262.</li>
+                    <li>Kang, Xiaojian, et al. "Hemispheric asymmetries in cortical and subcortical anatomy." Laterality: Asymmetries of Body, Brain and Cognition (2015): 1-27.</li>
+                    <li></li>
+                </ul>
             </div>
         </div>
-        <div style="width:50%; float: left;">
-            <div>
-            <div style="float: left; position: relative; left: -10px; height: 100%;">Conclusions:</div>
-            <div style="font-size: 24px;">
-                    <li>Delay magnitude has little effect on rate-coded networks; <i>unreliable</i> delays matter.</li>
-                    <li>In development, axons are thin &amp; unmyelinated, and likely have unreliable delays.</li>
-                    <li>Our model suggests an early bias for using shorter axons with more reliable delays.</li>
+        <div id='selector-container' style="width:20%; float: left; font-size: 18px; position: relative">
+            <div style='margin-left: 100px;'>
+            Contact me:
+                <li>Twitter: <a href="http://twitter.com/mrquickowl">@mrquickowl</a></li>
+                <li>Email: <a href="mailto:bcipolli@ucsd.edu">bcipolli@ucsd.edu</a></li>
+                <li>Github: <a href="https://github.com/bcipolli">bcipolli</a></li>
+            </div>
+            <div id="selector" style="display:none">
+                <div class='selector-type'>
+                    <span class="selection-label">Surface:</span>
+                    <input data-ng-model='metadata.surf_type' type="radio" name="surf_type" value="pial"></input><span>Pial</span>
+                    <input data-ng-model='metadata.surf_type' type="radio" name="surf_type" value="inflated" {% if $scope.mesh %}checked{% endif %}><span>Inflated</span>
+                </div>
+                <div class='selector-type'>
+                    <span class="selection-label">Atlas:</span>
+                    <input data-ng-model='metadata.atlas' type="radio" name="atlas" value="desikan"></input>
+                    <span class='input-label'>Desikan (36 ROIs)</span>
+
+                    <input data-ng-model='metadata.atlas' type="radio" name="atlas" value="destrieux"></input>
+                    <span class='input-label'>Destrieux (76 ROIs)</span>
+                </div>
             </div>
         </div>
     </div>
+    <script>
+        var app = angular.module('navigator', []);
+        app.controller('NavigateController', ['$scope', function($scope) {
+            // Object bound to the form. We "watch" this object below.
+            $scope.metadata = {
+                subject: 'fsaverage',
+                atlas: 'desikan',
+                surf_type: 'inflated',
+                prefix: 'MRI_cort_thick.ctx.',
+                measure: 'thickness'
+            };
 
-</div>
+            $scope.resources = [];
+            $scope.cur_resource = null;
+            window.scope = $scope;
+
+            // Use the relatively new watchCollection().
+            $scope.$watchCollection("metadata", function( newValue, oldValue ) {
+                //$('iframe').each(function(ifr) { console.log(ifr.data()); });
+            });
+        }]);
+    </script></div>
 </body>
 </html>

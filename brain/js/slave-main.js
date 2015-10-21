@@ -3,9 +3,9 @@ app.controller('NavigateController', ['$scope', function($scope) {
     // Object bound to the form. We "watch" this object below.
     $scope.metadata = {
         subject: 'fsaverage',
-        atlas: 'destrieux',
-        surf_type: 'pial',
-        prefix: 'Destrieux_area.',
+        atlas: 'desikan',
+        surf_type: 'inflated',
+        prefix: 'MRI_cort_area.ctx.',
         measure: 'area'
     };
     $scope.manifest_url = build_manifest_url('data', $scope.metadata);
@@ -30,6 +30,7 @@ app.controller('NavigateController', ['$scope', function($scope) {
 
         manifest_url = build_manifest_url('data', $scope.metadata);
         data_url = build_data_url('data', $scope.metadata);
+        console.log(data_url)
         if (manifest_url != $scope.manifest_url) {
             $scope.manifest_url = manifest_url;
             if (data_url != $scope.data_url)
