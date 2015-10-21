@@ -96,10 +96,28 @@ def generate_multivariate():
                             output_format='json',
                             verbose=0, pc_thresh=0.05)
 
+
+def generate_regressions():
+    from ping.ping.data import prefixes
+    from ping.scripts.grouping import do_grouping
+    for atlas, measures in prefixes.items():
+        if atlas == 'destrieux':
+            continue
+        for measure, prefix in measures.items():
+            for grouping_key in ['Gender', 'FDH_23_Handedness_Prtcpnt']:
+                do_grouping(prefixes=[prefix], grouping_keys=[grouping_key],
+                            xaxis_key='Age_At_IMGExam',
+                            plots='regressions', atlas='desikan',
+                            data_dir='generated/data',
+                            output_dir='generated/plots/regression/',
+                            output_type='matplotlib')
+
+
 if __name__ == '__main__':
     # generate_all_brains()
     # generate_manhattan()
     # generate_scatter_bokeh()
     # generate_similarity_bokeh()
-    generate_similarity_json()
+    # generate_similarity_json()
     # generate_multivariate()
+    generate_regressions()

@@ -168,7 +168,7 @@ body {
 .main-content {
     width: 70%;
     float: left;
-    padding: 50px 50px 50px 50px;
+    padding: 0px 50px 0px 50px;
     height: 795px;
     box-sizing: border-box;
 }
@@ -209,11 +209,13 @@ body {
 
 .content-pane {
     width: 1300px;
-    height: 725px;
+    height: 775px;
     overflow: scroll;
 }
 .content-pane div {
     float: left;
+    margin: 0px;
+    padding: 0px;
 }
 
 .section-button ul {

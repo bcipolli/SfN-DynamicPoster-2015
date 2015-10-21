@@ -27,11 +27,7 @@ from bokeh.util.string import encode_utf8
 
 def serve_index():
     return """
-        <a href='2015/index.html'>Old poster</a>
-        <a href='brain/two_hemis.html'>Two hemis</a>
-        <a href='gwas/manhattan/manhattan.html'>Manhattan</a>
-        <a href='scatter/index.html'>Scatter</a> (just one measure)
-        <a href='similarity/index.html'>Similarity</a> (just one measure)
+        <html><head><meta http-equiv="refresh" content="0;2015/index.html"></head></html>
         """
 
 
@@ -65,29 +61,38 @@ def deploy():
     ping_viz_path = osp.join(pathof('ping'), 'viz')
     roygbiv_web_path = osp.join(pathof('roygbiv'), 'web')
 
-    # Poster
-    mkdirp('deploy')
-    copytree('2015', 'deploy')
+    try:
 
-    # Brain
-    mkdirp('deploy/brain')  # basedir
-    copytree(roygbiv_web_path, 'deploy/brain')
-    shutil.copy('brain/two_hemis.html', 'deploy/brain/index.html')
-    copytree('brain/css/', 'deploy/brain/css/')
-    copytree('brain/js/', 'deploy/brain/js/')
-    mkdirp('deploy/brain/data')
-    symlink('generated/data/fsaverage', 'deploy/brain/data/fsaverage')  # data
+        # Poster
+        mkdirp('deploy')
+        copytree('2015', 'deploy/2015')
 
-    # Manhattan
-    mkdirp('deploy/gwas')
-    copytree(osp.join(ping_viz_path, 'manhattan'), 'deploy/gwas')
-    symlink('deploy/gwas/manhattan.html', 'deploy/gwas/index.html')
-    mkdirp('deploy/gwas/data')
-    for fil in glob.glob('generated/data/*.json'):
-        symlink(fil, os.path.join('deploy/gwas/data', os.path.basename(fil)))
+        # Brain
+        copytree(roygbiv_web_path, 'deploy/brain')
+        for fil in glob.glob('brain/*.html'):
+            shutil.copy(fil, 'deploy/' + fil)
+        shutil.copy('brain/two_hemis.html', 'deploy/brain/index.html')
+        for fil in glob.glob('brain/css/*') + glob.glob('brain/js/*'):
+            shutil.copy(fil, 'deploy/' + fil)
+        mkdirp('deploy/brain/data')
+        copytree('generated/data/fsaverage', 'deploy/brain/data/fsaverage')  # data
 
-    # scatter / similarity plots
-    symlink('generated/plots/', 'deploy/plots/')
+        # Manhattan
+        mkdirp('deploy/gwas')
+        copytree(osp.join(ping_viz_path, 'manhattan'), 'deploy/gwas')
+        shutil.copyfile('deploy/gwas/manhattan.html', 'deploy/gwas/index.html')
+        mkdirp('deploy/gwas/data')
+        for fil in glob.glob('generated/data/*.json'):
+            shutil.copyfile(fil, os.path.join('deploy/gwas/data', os.path.basename(fil)))
+
+        # scatter / similarity plots
+        copytree('generated/plots', 'deploy/plots')
+
+        # Create the default page.
+        with open('deploy/index.html', 'w') as fp:
+            fp.write(serve_index())
+    except Exception as e:
+        print("Error deploying: %s" % e)
 
     def serve():
         app.route('/')(serve_index)
@@ -121,6 +126,7 @@ def server_it():
         except Exception as e:
             import roygbiv
             viz_dir = os.path.join(os.path.dirname(roygbiv.__file__), 'web')
+            print viz_dir, path
             return flask.send_from_directory(viz_dir, path)
 
     # GWAS app

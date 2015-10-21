@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>three.js webgl - loaders - vtk loader</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link rel="stylesheet" type="text/css" href="css/regressions.css" />
+
+        <script src="js/libs/three.min.js"></script>
+        <script src="js/libs/Projector.js"></script>
+        <script src="js/libs/Detector.js"></script>
+        <script src="js/libs/TrackballControls.js"></script>
+        <script src="js/libs/VTKLoader.js"></script>
+        <!--<script src="js/libs/Detector.js"></script>
+        <script src="js/libs/stats.min.js"></script>-->
+        <script src="js/libs/jquery.min.js"></script>
+        <script src="js/libs/d3.min.js"></script>
+        <script src="js/libs/box.js"></script>
+        <script src="js/libs/sprintf.js"></script>
+        <script src="js/libs/angular.min.js"></script>
+
+        <script src="js/brain.utils.js"></script>
+        <script src="js/brain.js"></script>
+        <script src="js/boxplot.js"></script>
+    </head>
+
+    <body>
+        <div ng-app="navigator" ng-controller="NavigateController" ng-strict-di>
+            <div id="header_n_label">
+                <div id="nav_label">
+                    Surface area x gender (shift+click on ROI for plot)<br/>
+                    Selected Label: {{selectedLabel}}
+                </div>
+                <div id="plot-canvas">
+                    <img id="plot-img" src=""></img>
+                </div>
+            </div>
+            <div id="nav-brain">
+            </div>
+        </div>
+
+        <script>
+            angular.module('navigator', [])
+            .controller('NavigateController', ['$scope', function($scope) {
+                $scope.brain = new Brain({
+                    divID: "nav-brain",
+                    callback: function(mesh) {
+                        if (!mesh) {
+                            $scope.selectedLabel = "";
+                            $('#plot-canvas').empty();
+                        } else {
+                            $scope.selectedLabel = mesh.roi_key;
+                            $('#plot-img').attr('src', '../plots/regression/MRI_cort_area.ctx.' + mesh.roi_key + '_AI-Gender-regressions.png');
+                        }
+                        $scope.$apply();
+                    },
+                    manifest_url: 'data/fsaverage/desikan/inflated/MRI_cort_area.ctx.lh_files_to_load.json'
+                });
+            }]);
+        </script>
+    </body>
+</html>

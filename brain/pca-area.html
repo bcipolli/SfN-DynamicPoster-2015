@@ -33,30 +33,40 @@ Design:
 
 <body ng-app="navigator" ng-strict-di ng-controller="NavigateController">
     <div id="right-container">
-        <div id="right-header">
-            <div id="nav_label" style="float: left; overflow: hidden; width: 1250px;">
-                <div>
-                    {{ mesh.name }}
+        <div id="right-header" style=" width: 750px;">
+            <h1>Surface area PCA loadings</h1>
+            <div id="nav_label">
+                <div style="float: left; overflow: hidden;">
+                    PCA component: {{ metadata.component }}
+                    <span ng-if="mesh">
+                    <br/>{{ mesh.value | number: 3 }} loading
+                    <br/>ROI={{ mesh.name }}
+                    </span>
                     <br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ mesh.value * 100 | number: 2 }}% asymmetric
+                    Shift+click to select a brain area.
                 </div>
-                Shift+click to select a brain area.
-                <br/>
-                &nbsp;
             </div>
-            <div class='label'>Surface Area</div>
-            <div id="plot-canvas" class="brain" style="width: 500px; height: 350px; position: relative; left: 50px; ">
+            <div id="master-brain" style="width: 600px; height: 400px; margin: 0px;">
             </div>
-        </div>
-    </div>
-    <div id="left-container" style="position: relative; top: -60px; left: -100px;">
-        <div id="left-header">
-        </div>
-        <div class='label'>Thickness</div>
-        <div id="nav-brain" style="width: 500px; height: 350px;">
+            <div id="selector" style="position: relative; top: -20px;">
+                <div>
+                    <span class="selection-label">Component:</span><br/>
+                    <input ng-model='metadata.component' type="radio" name="surf_type" value="0"></input><span>0</span>
+<input ng-model='metadata.component' type="radio" name="surf_type" value="1"></input><span>1</span>
+                    <input ng-model='metadata.component' type="radio" name="surf_type" value="2"></input><span>2</span>
+                    <input ng-model='metadata.component' type="radio" name="surf_type" value="3"></input><span>3</span>
+                    <input ng-model='metadata.component' type="radio" name="surf_type" value="4"></input><span>4</span>
+                </div>
+            </div>
         </div>
     </div>
     <script>
+        function build_data_url(base_url, metadata) {
+            return base_url + '/' + metadata.subject + '/'
+                            + metadata.atlas + '/'
+                            + metadata.prefix + '_PC' + metadata.component + '.json';
+        }
+
         var app = angular.module('navigator', []);
         app.controller('NavigateController', ['$scope', function($scope) {
             // Object bound to the form. We "watch" this object below.
@@ -64,51 +74,38 @@ Design:
                 subject: 'fsaverage',
                 atlas: 'desikan',
                 surf_type: 'inflated',
-                prefix: 'MRI_cort_thick.ctx.',
-                measure: 'thickness'
+                prefix: 'MRI_cort_area.ctx.',
+                measure: 'area',
+                component: 0
             };
             $scope.manifest_url = build_manifest_url('data', $scope.metadata);
+            $scope.data_url = build_data_url('data', $scope.metadata);
 
             // Create the right hemi brain
             $scope.stats_brain = new Brain({
-                divID: "plot-canvas",
-                manifest_url: $scope.manifest_url.replace('thickness', 'area').replace('thick', 'area'),
-                callback: function(mesh) {
-                    if ($scope.mesh && $scope.mesh.name == mesh.name)
-                        return;
-
-                    $scope.mesh = mesh;
-                    $scope.$apply();
-                    click_partner_function($scope.nav_brain)(mesh);
-                }
-            });
-
-            // Create the "brain" for navigation
-            $scope.nav_brain = new Brain({
-                divID: "nav-brain",
+                divID: "master-brain",
                 manifest_url: $scope.manifest_url,
-                callback: function(mesh) {
-                    if ($scope.mesh && $scope.mesh.name == mesh.name)
-                        return;
-
-                    $scope.mesh = mesh;
-                    $scope.$apply();
-                    click_partner_function($scope.stats_brain)(mesh);
-                }
+                data_url: $scope.data_url,
+                value_key: 'pc'
             });
-            window.brain = $scope.nav_brain;
+            $scope.stats_brain.objectPick = function(mesh)  {
+                if (!mesh)
+                    return;
+                console.log('pca', mesh.value)
+                $scope.mesh = mesh;
+                $scope.$apply()
+            };
 
             // Use the relatively new watchCollection().
             $scope.$watchCollection("metadata", function( newValue, oldValue ) {
                 $scope.metadata.prefix = measure2prefix(newValue.measure, newValue.atlas);
                 $scope.manifest_url = build_manifest_url('data', newValue);
-            });
-            $scope.$watch('manifest_url', function(newValue, oldValue) {
-                // Update the brains
-                if ($scope.nav_brain)
-                    $scope.nav_brain.loadBrain({manifest_url: newValue});
-                if ($scope.stats_brain)
-                    $scope.stats_brain.loadBrain({manifest_url: newValue.replace('thickness', 'area').replace('thick', 'area')});
+                $scope.data_url = build_data_url('data', newValue);
+                $scope.stats_brain.loadBrain({
+                    manifest_url: $scope.manifest_url,
+                    data_url: $scope.data_url
+                });
+
             });
         }]);
     </script>
