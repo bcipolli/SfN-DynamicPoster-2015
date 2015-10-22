@@ -30,30 +30,31 @@ Design:
     <script src="js/brain.js"></script>
     <script src="js/hemi-plotter.js"></script>
     <script src="js/poster.js"></script>
+    <style>
+        .brain-container { margin: 10px 20px 10px 20px; width: 500px; height: 350px;}
+    </style>
 </head>
 
 <body ng-app="navigator" ng-strict-di ng-controller="NavigateController">
-    <div id="right-container" style="width:650px;">
-        <div id="right-header">
-            <div id="nav_label">
-                <div style="float: left">
-                </div>
-                <div style="float: left; overflow: hidden; width: 650px;">
-                    {{ mesh.name }}
-                    <br/>
-                    Shift+click to select a brain area.
-                </div>
-            </div>
-            <div class='label'>Asymmetry Index</div>
-            <div id="master-brain">
-            </div>
+    <div id="header-n-label">
+        <div id="nav-title">
+            Map of surface area partial correlations<br/>(shift+click to select a brain area)
+        </div>
+        <div id="nav-info">
+            Selected label: {{ mesh.name }}
         </div>
     </div>
-    <div id="left-container" style="position: relative;top: 70px;">
+    <div class="brain-container">
+        <div class='label'>Asymmetry Index</div>
+        <div id="master-brain" class="brain">
+        </div>
+    </div>
+    <div class="brain-container">
         <div class='label'>Partial correlation</div>
-        <div id="slave-brain">
+        <div id="slave-brain" class="brain">
         </div>
     </div>
+
     <script>
         function build_data_url(base_url, metadata) {
             return base_url + '/' + metadata.subject + '/'

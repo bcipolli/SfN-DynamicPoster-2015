@@ -325,16 +325,36 @@
                 <div class='subsection'><a name="partial-correlation"></a>
                     <div class='content'>
                         <p>
-                            Similarity matrix
+                            We looked at how asymmetry index (AI) in one area correlated
+                            to AI in another area, after removing the effect explained by AI of every other area (<a href="#methods">methods</a>). This gave us a similarity matrix. Areas are organized according to location; red means a positive correlation (one asymmetry predicts the other); blue means anti-correlation.
                         </p>
-                        <iframe scrolling="no" data-ng-if="cur_resource == 'partial-correlation'" data-ng-src='../brain/similarity-slave.html' style="width: 1100px; height: 550px;" >
+                        <p style="text-align: center; font-weight: bold">
+                            Scroll to see: surface area, thickness, and an interactive brain map of surface area.
+                        </p>
+                    </div>
+
+                    <div class='content'>
+                        <p>
+                            For surface area, note that in general, if one area is asymmetric, a near by is asymmetric in the opposite direction. This indicates local compensation. Also note that most (partial) correlations are along the diagonal.
+                        </p>
+                        <iframe scrolling="no" ng-if="cur_resource == 'partial-correlation'" ng-src='../plots/similarity/MRI_cort_area.ctx..html' style="width: 1000px; height: 900px; margin-left: 250px">
                         </iframe>
                     </div>
 
-                    <div class='content' style='margin-top: 100px;'>
-                        <iframe scrolling="no" ng-if="cur_resource == 'partial-correlation'" ng-src='../plots/similarity/MRI_cort_area.ctx..html' style="width: 1000px; height: 1000px; margin-left: 250px; margin-bottom: 150px;">
+                    <div class='content'>
+                        <p>
+                            Select one area in the left brain (showing asymmetry index (AI)), and see a map of the partial correlations of all other areas with that area's AI.
+                        </p>
+                        <iframe scrolling="no" data-ng-if="cur_resource == 'partial-correlation'" data-ng-src='../brain/similarity-slave.html' style="width: 1100px; height: 550px; margin-left: 100px;" >
                         </iframe>
-                        <iframe scrolling="no" ng-if="cur_resource == 'partial-correlation'" ng-src='../plots/similarity/MRI_cort_thick.ctx..html' style="width: 1000px; height: 1000px; margin-left: 250px;">
+                    </div>
+
+                    <div class='content'>
+                        <p>
+                            For thickness, note the positive correlations along the diagonal:
+                            if one area is asymmetric, nearby areas are asymmetric in the same direction. Again, note that most (partial) correlations are along the diagonal.
+                        </p>
+                        <iframe scrolling="no" ng-if="cur_resource == 'partial-correlation'" ng-src='../plots/similarity/MRI_cort_thick.ctx..html' style="width: 1000px; height: 900px; margin-left: 250px">
                         </iframe>
                     </div>
 
