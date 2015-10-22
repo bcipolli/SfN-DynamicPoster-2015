@@ -1,12 +1,3 @@
-<!--
-Design:
-    + brain.js : service for showing a clickable, colored brain.
-    + navigator.js : controller for the brain navigator
-      => depends on brain.js
-    + plotter.js : controller for the plotting
-      => must be told what function to use to plot, in the constructor.
-      => function may depend on brain.js, but controller does NOT
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,37 +20,45 @@ Design:
     <script src="js/brain.utils.js"></script>
     <script src="js/brain.js"></script>
     <script src="js/poster.js"></script>
+    <style>
+        .brain-container {
+            width: 590px;
+            height: 450px;
+            margin: 0px;
+        }
+    </style>
 </head>
 
 <body ng-app="navigator" ng-strict-di ng-controller="NavigateController">
-    <div id="right-container">
-        <div id="right-header" style=" width: 750px;">
-            <h1>Cortical thickness PCA loadings</h1>
-            <div id="nav_label">
-                <div style="float: left; overflow: hidden;">
-                    PCA component: {{ metadata.component }}
-                    <span ng-if="mesh">
-                    <br/>{{ mesh.value | number: 3 }} loading
-                    <br/>ROI={{ mesh.name }}
-                    </span>
-                    <br/>
-                    Shift+click to select a brain area.
-                </div>
-            </div>
-            <div id="master-brain" style="width: 600px; height: 400px; margin: 0px;">
-            </div>
-            <div id="selector" style="position: relative; top: -20px;">
-                <div>
-                    <span class="selection-label">Component:</span><br/>
-                    <input ng-model='metadata.component' type="radio" name="surf_type" value="0"></input><span>0</span>
+    <div id="header-n-label">
+        <div id="nav-title">
+            Thickness PCA loadings
+            <br/>
+            (Shift+click to select a brain area.)
+        </div>
+        <div id="nav-info">
+            PCA component: {{ metadata.component }}
+            <span ng-if="mesh">
+                <br/>{{ mesh.value | number: 3 }} loading
+                <br/>ROI={{ mesh.name }}
+            </span>
+        </div>
+    </div>
+    <div class="brain-container">
+        <div id="master-brain" class="brain">
+        </div>
+        <div id="selector">
+            <div>
+                <span class="selection-label">Component:</span><br/>
+                <input ng-model='metadata.component' type="radio" name="surf_type" value="0"></input><span>0</span>
 <input ng-model='metadata.component' type="radio" name="surf_type" value="1"></input><span>1</span>
-                    <input ng-model='metadata.component' type="radio" name="surf_type" value="2"></input><span>2</span>
-                    <input ng-model='metadata.component' type="radio" name="surf_type" value="3"></input><span>3</span>
-                    <input ng-model='metadata.component' type="radio" name="surf_type" value="4"></input><span>4</span>
-                </div>
+                <input ng-model='metadata.component' type="radio" name="surf_type" value="2"></input><span>2</span>
+                <input ng-model='metadata.component' type="radio" name="surf_type" value="3"></input><span>3</span>
+                <input ng-model='metadata.component' type="radio" name="surf_type" value="4"></input><span>4</span>
             </div>
         </div>
     </div>
+
     <script>
         function build_data_url(base_url, metadata) {
             return base_url + '/' + metadata.subject + '/'
