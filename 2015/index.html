@@ -245,7 +245,7 @@
                             </ul>
                         </p>
                     </div>
-                    <iframe ng-if="cur_resource == 'typical-asymmetry'" ng-src='../brain/area_and_thickness.html' style="width:1250px; height: 550px;">
+                    <iframe scrolling="no" ng-if="cur_resource == 'typical-asymmetry'" ng-src='../brain/area_and_thickness.html' style="width:1250px; height: 600px;">
                     </iframe>
                 </div><!-- subsection -->
 
@@ -256,11 +256,11 @@
                             over development. Results are similar when grouping by Gender (male/female) or handedness (left/right/mixed) or both.
                         </p>
                         <div style="margin-bottom: 10px;">
-                            <iframe ng-if="cur_resource == 'few-differences'" ng-src='../brain/regressions.html' style="width: 1075px; height: 325px; margin-left: 75px;">
+                            <iframe scrolling="no" ng-if="cur_resource == 'few-differences'" ng-src='../brain/regressions.html' style="width: 1075px; height: 325px; margin-left: 75px;">
                             </iframe>
                         </div>
                         <div>
-                            <iframe ng-if="cur_resource == 'few-differences'" ng-src='../brain/regressions-thickness-handedness.html' style="width: 1075px; height: 325px; margin-left: 75px;">
+                            <iframe scrolling="no" ng-if="cur_resource == 'few-differences'" ng-src='../brain/regressions-thickness-handedness.html' style="width: 1075px; height: 325px; margin-left: 75px;">
                             </iframe>
                         </div>
                     </div>
@@ -271,9 +271,9 @@
                         <p>
                             Scatter plots of mean asymmetry index vs. std asymmetry index.
                         </p>
-                        <iframe ng-if="cur_resource == 'larger-asymmetries'" ng-src='../plots/scatter/MRI_cort_area.ctx._AI:mean-_AI:std-_LH_PLUS_RH:mean-scatter.html'>
+                        <iframe scrolling="no" ng-if="cur_resource == 'larger-asymmetries'" ng-src='../plots/scatter/MRI_cort_area.ctx._AI:mean-_AI:std-_LH_PLUS_RH:mean-scatter.html'>
                         </iframe>
-                        <iframe ng-if="cur_resource == 'larger-asymmetries'" ng-src='../plots/scatter/MRI_cort_thick.ctx._AI:mean-_AI:std-_LH_PLUS_RH:mean-scatter.html'>
+                        <iframe scrolling="no" ng-if="cur_resource == 'larger-asymmetries'" ng-src='../plots/scatter/MRI_cort_thick.ctx._AI:mean-_AI:std-_LH_PLUS_RH:mean-scatter.html'>
                         </iframe>
                     </div>
                 </div>
@@ -283,7 +283,7 @@
                         <p>
                             There is no correlation between surface area and thickness.
                         </p>
-                        <iframe data-ng-if="cur_resource == 'no-cross-correlation'" data-ng-src='../plots/scatter/MRI_cort_area.ctx.:_AI:mean-MRI_cort_thick.ctx.:_AI:mean-nosz-scatter.html' style="margin-left: 300px;" >
+                        <iframe scrolling="no" data-ng-if="cur_resource == 'no-cross-correlation'" data-ng-src='../plots/scatter/MRI_cort_area.ctx.:_AI:mean-MRI_cort_thick.ctx.:_AI:mean-nosz-scatter.html' style="margin-left: 300px;" >
                         </iframe>
                     </div>
                 </div>
@@ -315,14 +315,14 @@
                         <p>
                             Similarity matrix
                         </p>
-                        <iframe data-ng-if="cur_resource == 'partial-correlation'" data-ng-src='../brain/similarity-slave.html' style="width: 1100px; height: 550px;" >
+                        <iframe scrolling="no" data-ng-if="cur_resource == 'partial-correlation'" data-ng-src='../brain/similarity-slave.html' style="width: 1100px; height: 550px;" >
                         </iframe>
                     </div>
 
                     <div class='content' style='margin-top: 100px;'>
-                        <iframe ng-if="cur_resource == 'partial-correlation'" ng-src='../plots/similarity/MRI_cort_area.ctx..html' style="width: 1000px; height: 1000px; margin-left: 250px; margin-bottom: 150px;">
+                        <iframe scrolling="no" ng-if="cur_resource == 'partial-correlation'" ng-src='../plots/similarity/MRI_cort_area.ctx..html' style="width: 1000px; height: 1000px; margin-left: 250px; margin-bottom: 150px;">
                         </iframe>
-                        <iframe ng-if="cur_resource == 'partial-correlation'" ng-src='../plots/similarity/MRI_cort_thick.ctx..html' style="width: 1000px; height: 1000px; margin-left: 250px;">
+                        <iframe scrolling="no" ng-if="cur_resource == 'partial-correlation'" ng-src='../plots/similarity/MRI_cort_thick.ctx..html' style="width: 1000px; height: 1000px; margin-left: 250px;">
                         </iframe>
                     </div>
 
@@ -332,12 +332,12 @@
                 <div class='subsection'><a name="pca"></a>
                     <div class='content'>
                         <div style="float:left; margin-right: 15px;">
-                            <iframe data-ng-if="cur_resource == 'pca'" data-ng-src='../brain/pca-area.html' style="width: 600px; height: 650px;" >
+                            <iframe scrolling="no" data-ng-if="cur_resource == 'pca'" data-ng-src='../brain/pca-area.html' style="width: 600px; height: 650px;" >
                         </iframe>
                         </div>
 
                         <div style="float:left">
-                                <iframe data-ng-if="cur_resource == 'pca'" data-ng-src='../brain/pca-thickness.html' style="width: 600px; height: 650px; " >
+                                <iframe scrolling="no" data-ng-if="cur_resource == 'pca'" data-ng-src='../brain/pca-thickness.html' style="width: 600px; height: 650px; " >
                             </iframe>
                         </div>
                     </div>
@@ -361,7 +361,7 @@
             <div class="content-pane" style="position: relative;">
                 <div class='subsection'><a name="stk31-gwas"></a>
                     <div class='content'>
-                        <iframe data-ng-if="cur_resource == 'stk31-gwas'" data-ng-src='../gwas/index.html' style="width: 1300px; height: 450px; margin-top: 15px;" >
+                        <iframe scrolling="no" data-ng-if="cur_resource == 'stk31-gwas'" data-ng-src='../gwas/index.html' style="width: 1300px; height: 450px; margin-top: 15px;" >
                         </iframe>
 
                         <p>
