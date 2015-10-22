@@ -55,6 +55,7 @@
         iframe {
             border: 0;
             overflow: hidden;
+
             width: 625px;
             height: 800px;
             float: left;
@@ -119,7 +120,7 @@
                     language), but generally not for anatomical asymmetries.
                     </p>
                     <p>
-                        We used the <a href='http://pingstudy.ucsd.edu/'>PING</a> dataset (cross-sectional data,<br/> N=1400, ages 3-20) to analyze cortical<br/> surface area&amp; thickness asymmetries.
+                        We used the <a href='http://pingstudy.ucsd.edu/'>PING</a> dataset (cross-sectional data,<br/> N=1400, ages 3-20) to analyze cortical<br/> surface area &amp; thickness asymmetries.
                     </ul>
                 </div>
                 <div style='position: relative; left: 510px; top: -120px;'>
@@ -236,13 +237,24 @@
 
                 <div class='subsection'><a name="typical-asymmetry"></a>
                     <div class='content'>
-                        <p>
+                        <div style="width:100%;font-style: italic;">
                             We found typical asymmetries, such as:
-                            <ul>
-                                <li>Right frontal pole</li>
-                                <li>Left Broca's area &amp; transverse temporal</li>
-                                <li>Left Broca's area &amp; transverse temporal</li>
+                        </div>
+                        <div style="width:50%; float: left">
+                            <ul> <b>Surface area</b>
+                                <li>-- frontal pole</li>
+                                <li>++ pars opercularis (Broca's area)</li>
+                                <li>transverse temporal (Wernicke's area)</li>
+                                <li>-- inferior parietal lobe</li>
                             </ul>
+                        </div>
+                        <div style="width:50%; float: left">
+                            <ul><b>Thickness</b>
+                                <li>++ frontal pole</li>
+                                <li>-- cingulate cortex</li>
+                                <li>-- inferior parietal lobe</li>
+                            </ul>
+                        </div>
                         </p>
                     </div>
                     <iframe scrolling="no" ng-if="cur_resource == 'typical-asymmetry'" ng-src='../brain/area_and_thickness.html' style="width:1250px; height: 600px;">
