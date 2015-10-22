@@ -32,30 +32,34 @@ Design:
 </head>
 
 <body ng-app="navigator" ng-strict-di ng-controller="NavigateController">
-    <div id="right-container">
-        <div id="right-header">
-            <div id="nav_label" style="float: left; overflow: hidden; width: 1250px;">
+    <div>
+        <div id="header-n-label">
+            <div id="nav-info">
                 <div>
                     {{ mesh.name }}
                     <br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ mesh.value * 100 | number: 2 }}% asymmetric
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    {{ mesh.value * 100 | number: 2 }}% asymmetric
                 </div>
                 Shift+click to select a brain area.
                 <br/>
                 &nbsp;
             </div>
+        </div>
+        <style>
+            .brain-container { width: 500px; height: 350px; margin: 10px 50px 10px 50px; }
+        </style>
+        <div class="brain-container">
             <div class='label'>Surface Area</div>
-            <div id="plot-canvas" class="brain" style="width: 500px; height: 350px; position: relative; left: 50px; ">
+            <div id="plot-canvas" class="brain">
             </div>
         </div>
-    </div>
-    <div id="left-container" style="position: relative; top: -60px; left: -100px;">
-        <div id="left-header">
-        </div>
-        <div class='label'>Thickness</div>
-        <div id="nav-brain" style="width: 500px; height: 350px;">
+        <div class="brain-container">
+            <div class='label'>Thickness</div>
+            <div id="nav-brain" class="brain">
         </div>
     </div>
+
     <script>
         var app = angular.module('navigator', []);
         app.controller('NavigateController', ['$scope', function($scope) {
