@@ -17,6 +17,7 @@ import os.path as osp
 import shutil
 
 import flask
+import simplejson
 
 from bokeh.embed import components
 from bokeh.plotting import figure
@@ -91,6 +92,17 @@ def deploy():
         # Create the default page.
         with open('deploy/index.html', 'w') as fp:
             fp.write(serve_index())
+
+        # Finally, try and reduce snp file size.
+        with open('deploy/gwas/data/SNPS_all.json', 'r') as fp:
+            snps = simplejson.load(fp)
+        with open('deploy/gwas/data/GWAS_MRI_cort_area_ctx_frontalpole_AI__Age_At_IMGExam.json', 'r') as fp:
+            gwas = simplejson.load(fp)
+        snps = dict([(k, v) for k, v in snps.items()
+                     if k in gwas[gwas.keys()[0]]])
+        with open('deploy/gwas/data/snps_all.json', 'w') as fp:
+            simplejson.dump(snps, fp)
+
     except Exception as e:
         print("Error deploying: %s" % e)
 
