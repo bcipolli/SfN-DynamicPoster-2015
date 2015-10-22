@@ -70,23 +70,25 @@ $(function() {
 });
 
 
-function goto(res_id) {
-    $scope = window.scope;
-    $scope.resources.push(res_id);
-    $scope.cur_resource = res_id;
-    $scope.$apply();
-    console.log(res_id);
-    window.location.hash = '#' + res_id;
+function goto(res_id, sec_id) {
+    if (sec_id) {
+        var sectionID = "#section" + sec_id;
+        $(sectionID).trigger('click');
+    }
+    if (res_id) {
+        $scope = window.scope;
+        $scope.resources.push(res_id);
+        $scope.cur_resource = res_id;
+        $scope.$apply();
+        window.location.hash = '#' + res_id;
+    }
 }
-
 
 /* Now, parse out the bookmark */
 $(function() {
     if (window.location.hash && window.location.hash.length > 1) {
         if (window.location.hash.substr(0,2) == "#b") {
-            var sectionID = "#section" + window.location.hash.substr(2);
-            console.log(sectionID);
-            $(sectionID).trigger('click');
+            goto(null, window.location.hash.substr(2));
         } else {
             goto(window.location.hash.substr(1));
         }
