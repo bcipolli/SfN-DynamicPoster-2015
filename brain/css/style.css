@@ -4,147 +4,54 @@ body {
 	background-color: #000;
 	color: #fff;
 	margin: 0px;
+	font-size: 18pt;
 }
-#info {
-	color: #fff;
+
+#header-n-label {
 	width: 100%;
+	padding: 10px;
+}
+
+#nav-title {
 	text-align: center;
-	z-index: 100;
-}
-#info a, .button { color: #f00; font-weight: bold; text-decoration: underline; cursor: pointer }
-
-.box {
-	font:10px sans-serif;
+	width: 100%;
+	margin-bottom: 10px;
 }
 
-.box text {
-	fill:#fff;
-}
-
-.box line,.box rect,.box circle {
-	fill:#4682b4;
-	stroke:#fff;
-	stroke-width:1px;
-}
-
-.box .center {
-	stroke-dasharray:3,3;
-	fill:#fff;
-	stroke:#fff;
-}
-
-.box .outlier {
-	fill:none;
-	stroke:#fff;
-}
-
-.axis {
-	font:12px sans-serif;
-}
-
-.axis path,.axis line {
-	fill:none;
-	stroke:#fff;
-	shape-rendering:crispEdges;
-}
-
-.x.axis path {
-	fill:none;
-	stroke:#fff;
-	shape-rendering:crispEdges;
-}
-
-#header_n_label, #right-header {
-	float: left;
-	left: 0px;
-	margin: auto;
-	text-align: center;
-}
-
-#selector {
-	color: #999;
-}
-#selector {
-	position: relative;
-	top: 50px;
-	left: -20px;
-}
-
-#nav_label {
-	background-color:#000;
-	opacity:0.5;
-	padding:10px;
+#nav-info {
+	opacity: 0.5;
 	text-align:left;
 	color:white;
-	width: 100%;
-	overflow: hidden;
 }
 
-#left-header, #right-header {
-	width: 350px;
-	height: 150px;
-	margin: auto;
-	padding: 15px;
-}
-
-#plot-canvas, #nav-brain, #nav-brain1, #nav-brain2, #nav-brain3,
-#master-brain, #slave-brain {
-	margin: 10px;
-	padding: 10px;
+.brain-container {
+	padding: 5px;
+	float: left;
+	margin: 10px 100px 10px 100px;
 	width: 400px;
 	height: 267px;
+}
+
+ .label {
+	position: relative;
+	width: 100%;
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+.brain {
+	width: 100%;
+	height: 100%;
 	background-color: #333;
-	padding: 5px;
 	border-radius: 25px;
 }
-#plot-canvas {
-	position: relative;
-	top: -10px;
-}
-#nav-brain {
-	position: relative;
-	top: -15px;
-}
-#left-container .label {
-	position: relative;
-	left: 150px;
-	top: -15px;
-}
-#right-container .label {
-	position: relative;
-	left: 50px;
-	top: -10px;
-}
-#demo-links {
-	float: right;
-	margin: 10px auto 10px auto;
-	text-align: right;
-	display: none;
+
+.plot {
+	margin: 10px;
+	padding: 5px;
+	background-color: #333;
+	border-radius: 25px;
+	float: left;
+	opacity: 1.0;
 }
 
-#left-container{
-	width: 500px;
-	float: right;
-}
-
-#selector {
-	width: 500px;
-	margin: 25px auto 25px auto;
-}
-#selector span {
-    width: 100px;
-    float: left;
-}
-#selector.selection-label{
-    width: 75px;
-    font-family: arial;
-    float:left;
-}
-#selector input {
-    margin: 3px 10px 0px 10px;
-    float: left;
-}
-#selector div {
-	width: 400px;
-	overflow: hidden;
-}
