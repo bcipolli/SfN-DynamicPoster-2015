@@ -10,7 +10,7 @@ def generate_all_brains():
     from ping.scripts.brain import do_roygbiv
 
     for measure in ['area', 'thickness']:
-        for atlas in ['desikan', 'destrieux']:
+        for atlas in ['desikan']:  # skip destrieux
             for surface_type in ['pial', 'inflated']:
                 for subject in ['fsaverage']:
                     for hemi in ['lh', 'rh']:
@@ -41,6 +41,8 @@ def generate_scatter_bokeh():
 
     for atlas, measures in prefixes.items():
         # Generate area vs. thickness plots
+        if atlas.lower() == 'destrieux':
+            continue
         do_scatter(atlas=atlas, prefixes=[os.path.commonprefix(measures.values())],
                    x_key='%s:_AI:mean' % measures['area'],
                    y_key='%s:_AI:mean' % measures['thickness'],
@@ -64,6 +66,8 @@ def generate_similarity_bokeh():
     from ping.scripts.similarity import do_similarity
 
     for atlas, measures in prefixes.items():
+        if atlas == 'destrieux':  # skip destrieux
+            continue
         for measure, prefix in measures.items():
             # Generate similarity matrix for given dataset / data point
             do_similarity(atlas=atlas, prefixes=[prefix],
@@ -76,6 +80,8 @@ def generate_similarity_json():
     from ping.ping.data import prefixes
     from ping.scripts.similarity import do_similarity
     for atlas, measures in prefixes.items():
+        if atlas == 'destrieux':  # skip destrieux
+            continue
         for measure, prefix in measures.items():
             do_similarity(atlas=atlas, prefixes=[prefix],
                           metric='partial-correlation', measures=['Asymmetry Index'],
@@ -89,6 +95,8 @@ def generate_multivariate():
     from ping.scripts.multivariate import do_multivariate
 
     for atlas, measures in prefixes.items():
+        if atlas == 'destrieux':  # skip destrieux
+            continue
         for measure, prefix in measures.items():
             do_multivariate(prefixes=[prefix], atlas=atlas,
                             data_dir='generated/data',
@@ -101,7 +109,7 @@ def generate_regressions():
     from ping.ping.data import prefixes
     from ping.scripts.grouping import do_grouping
     for atlas, measures in prefixes.items():
-        if atlas == 'destrieux':
+        if atlas == 'destrieux':  # skip destrieux
             continue
         for measure, prefix in measures.items():
             for grouping_key in ['Gender', 'FDH_23_Handedness_Prtcpnt']:
