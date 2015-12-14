@@ -55,7 +55,6 @@ def deploy():
     def pathof(modpath):
         mod = __import__(modpath)
         path = os.path.dirname(mod.__file__)
-        print(mod.__file__)
         return path
 
     app = flask.Flask(__name__, static_url_path='/static')
@@ -138,7 +137,6 @@ def server_it():
         except Exception as e:
             import roygbiv
             viz_dir = os.path.join(os.path.dirname(roygbiv.__file__), 'web')
-            print viz_dir, path
             return flask.send_from_directory(viz_dir, path)
 
     # GWAS app
@@ -173,9 +171,12 @@ def server_it():
     app.run()
 
 if __name__ == "__main__":
+    import sys
     import threading
     import webbrowser
 
     # threading.Timer(1.25, lambda: webbrowser.open('http://127.0.0.1:5000/gwas/manhattan/manhattan.html')).start()
-    # deploy()
-    server_it()
+    if len(sys.argv) == 1 or sys.argv != 'deploy':
+        server_it()
+    else:
+        deploy()
