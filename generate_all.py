@@ -4,6 +4,7 @@ master script to generate all data.
 
 
 def generate_all_brains():
+    """ Generate all VTK files used by roygbiv (2D surface plot)"""
     import os
 
     from ping.ping.data import prefixes
@@ -26,6 +27,7 @@ def generate_all_brains():
 
 
 def generate_manhattan():
+    """ Generate genetic metadata and JSON for manhattan plot."""
     from ping.scripts.gwas import do_gwas
     do_gwas(action='display', measures='MRI_cort_area_ctx_frontalpole_AI',
             covariates=['Age_At_IMGExam'], data_dir='generated/data',
@@ -33,6 +35,7 @@ def generate_manhattan():
 
 
 def generate_scatter_bokeh():
+    """ Various scatter plots"""
     import os
 
     from ping.ping.data import prefixes
@@ -59,6 +62,7 @@ def generate_scatter_bokeh():
 
 
 def generate_similarity_bokeh():
+    """ Asymmetry partial correlation matrix"""
     import os
 
     from ping.ping.data import prefixes
@@ -77,6 +81,7 @@ def generate_similarity_bokeh():
 
 
 def generate_similarity_json():
+    """ Asymmetry partial correlation data as json overlay for roygbiv"""
     from ping.ping.data import prefixes
     from ping.scripts.similarity import do_similarity
     for atlas, measures in prefixes.items():
@@ -91,6 +96,7 @@ def generate_similarity_json():
 
 
 def generate_multivariate():
+    """ PCA overlay for roygbiv"""
     from ping.ping.data import prefixes
     from ping.scripts.multivariate import do_multivariate
 
@@ -106,6 +112,7 @@ def generate_multivariate():
 
 
 def generate_regressions():
+    """ Regression between age and value, grouped by gender/handedness"""
     from ping.ping.data import prefixes
     from ping.scripts.grouping import do_grouping
     for atlas, measures in prefixes.items():
