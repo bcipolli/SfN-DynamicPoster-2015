@@ -1,9 +1,9 @@
 bokeh>=0.10.0
 flask
-nibabel
+nibabel>=2.0.0
 pandas
 requests
 simplejson
-git+https://github.com/guruucsd/PING.git
-git+https://github.com/binarybottle/roygbiv.git
+git+https://github.com/guruucsd/PING.git@SfN2015
+git+https://github.com/binarybottle/roygbiv.git@f2bdb5fe139081c2e2e18ff6b5c2fa54dcebd357
 git+https://github.com/binarybottle/mindboggle.git
