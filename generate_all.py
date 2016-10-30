@@ -2,18 +2,20 @@
 master script to generate all data.
 """
 
+import copy
 import os.path as op
+
+from ping.ping.data import prefixes
+from ping.scripts.brain import do_roygbiv
+from ping.scripts.scatter import do_scatter
+from ping.scripts.similarity import do_similarity
 
 
 def generate_all_brains(data_dir=op.join('generated', 'data'),
                         output_dir=op.join('generated', 'data')):
-    """ Generate all VTK files used by roygbiv (2D surface plot)"""
-    import os
+    """Generate all VTK files used by roygbiv (2D surface plot)"""
 
-    from ping.ping.data import prefixes
-    from ping.scripts.brain import do_roygbiv
-
-    for measure in ['area', 'thickness']:
+    for measure in ['area', 'thickness', 'volume']:
         for atlas in ['desikan']:  # skip destrieux
             for surface_type in ['pial', 'inflated']:
                 for subject in ['fsaverage']:
@@ -30,8 +32,8 @@ def generate_all_brains(data_dir=op.join('generated', 'data'),
 
 
 def generate_manhattan(data_dir=op.join('generated', 'data'),
-                        output_dir=op.join('generated', 'data')):
-    """ Generate genetic metadata and JSON for manhattan plot."""
+                       output_dir=op.join('generated', 'data')):
+    """Generate genetic metadata and JSON for manhattan plot."""
     from ping.scripts.gwas import do_gwas
 
     do_gwas(action='display', measures='MRI_cort_area_ctx_frontalpole_AI',
@@ -41,12 +43,7 @@ def generate_manhattan(data_dir=op.join('generated', 'data'),
 
 def generate_scatter_bokeh(data_dir=op.join('generated', 'data'),
                            output_dir=op.join('generated', 'plots')):
-    """ Various scatter plots"""
-    import os
-
-    from ping.ping.data import prefixes
-    from ping.scripts.scatter import do_scatter
-    from ping.scripts.similarity import do_similarity
+    """Various scatter plots"""
 
     for atlas, measures in prefixes.items():
         # Generate area vs. thickness plots
@@ -54,7 +51,7 @@ def generate_scatter_bokeh(data_dir=op.join('generated', 'data'),
             continue
 
         # Thickness vs. area
-        do_scatter(atlas=atlas, prefixes=[os.path.commonprefix(measures.values())],
+        do_scatter(atlas=atlas, prefixes=[op.commonprefix(measures.values())],
                    x_key='%s:AI:mean' % measures['area'],
                    y_key='%s:AI:mean' % measures['thickness'],
                    title="Area vs. thickness",
@@ -72,13 +69,9 @@ def generate_scatter_bokeh(data_dir=op.join('generated', 'data'),
 
 
 def generate_similarity_bokeh(data_dir=op.join('generated', 'data'),
-                              output_dir=op.join('generated', 'plots', 'similarity')):
-    """ Asymmetry partial correlation matrix"""
-    import os
-
-    from ping.ping.data import prefixes
-    from ping.scripts.scatter import do_scatter
-    from ping.scripts.similarity import do_similarity
+                              output_dir=op.join('generated', 'plots',
+                                                 'similarity')):
+    """Asymmetry partial correlation matrix"""
 
     for atlas, measures in prefixes.items():
         if atlas == 'destrieux':  # skip destrieux
@@ -86,14 +79,15 @@ def generate_similarity_bokeh(data_dir=op.join('generated', 'data'),
         for measure, prefix in measures.items():
             # Generate similarity matrix for given dataset / data point
             do_similarity(atlas=atlas, prefixes=[prefix],
-                          metric='partial-correlation', measures=['Asymmetry Index'],
+                          metric='partial-correlation',
+                          measures=['Asymmetry Index'],
                           data_dir=data_dir,
                           output_dir=output_dir, output_format='bokeh')
 
 
 def generate_similarity_json(data_dir=op.join('generated', 'data'),
                              output_dir=op.join('generated', 'data')):
-    """ Asymmetry partial correlation data as json overlay for roygbiv"""
+    """Asymmetry partial correlation data as json overlay for roygbiv"""
     from ping.ping.data import prefixes
     from ping.scripts.similarity import do_similarity
 
@@ -102,7 +96,8 @@ def generate_similarity_json(data_dir=op.join('generated', 'data'),
             continue
         for measure, prefix in measures.items():
             do_similarity(atlas=atlas, prefixes=[prefix],
-                          metric='partial-correlation', measures=['Asymmetry Index'],
+                          metric='partial-correlation',
+                          measures=['Asymmetry Index'],
                           data_dir=data_dir,
                           output_dir=op.join(output_dir, 'fsaverage', atlas),
                           output_format='json')
@@ -110,7 +105,7 @@ def generate_similarity_json(data_dir=op.join('generated', 'data'),
 
 def generate_multivariate(data_dir=op.join('generated', 'data'),
                           output_dir=op.join('generated', 'data')):
-    """ PCA overlay for roygbiv"""
+    """PCA overlay for roygbiv"""
     from ping.ping.data import prefixes
     from ping.scripts.multivariate import do_multivariate
 
@@ -126,8 +121,9 @@ def generate_multivariate(data_dir=op.join('generated', 'data'),
 
 
 def generate_regressions(data_dir=op.join('generated', 'data'),
-                         output_dir=op.join('generated', 'plots', 'regression')):
-    """ Regression between age and value, grouped by gender/handedness"""
+                         output_dir=op.join('generated', 'plots',
+                                            'regression')):
+    """Regression between age and value, grouped by gender/handedness"""
     from ping.ping.data import prefixes
     from ping.scripts.grouping import do_grouping
 
@@ -147,38 +143,42 @@ def generate_regressions(data_dir=op.join('generated', 'data'),
 if __name__ == '__main__':
     from argparse import ArgumentParser
 
+    commands = ('brain', 'manhattan', 'scatter', 'similarity',
+                'multivariate', 'regression', 'all')
     parser = ArgumentParser()
-    parser.add_argument('command', default=None)
-    parser.add_argument('--data-dir', nargs='?', default=op.join('generated', 'data'))
-    parser.add_argument('--output-dir', nargs='?', default=op.join('generated'))
+    parser.add_argument('command', default='all', choices=commands)
+    parser.add_argument('--data-dir', nargs='?',
+                        default=op.join('generated', 'data'))
+    parser.add_argument('--output-dir', nargs='?',
+                        default=op.join('generated'))
     args = parser.parse_args()
 
-    args_dict = vars(args)
+    args_dict = copy.deepcopy(vars(args))
     command = args.command
     del args_dict['command']
 
-    if command is None or command == 'brain':
+    if command == 'all' or command == 'brain':
         args_dict['output_dir'] = op.join(args.output_dir, 'data')
         generate_all_brains(**args_dict)
 
-    if command is None or command == 'manhattan':
+    if command == 'all' or command == 'manhattan':
         args_dict['output_dir'] = op.join(args.output_dir, 'data')
         generate_manhattan(**args_dict)
 
-    if command is None or command == 'scatter':
+    if command == 'all' or command == 'scatter':
         args_dict['output_dir'] = op.join(args.output_dir, 'plots', command)
         generate_scatter_bokeh(**args_dict)
 
-    if command is None or command == 'similarity':
+    if command == 'all' or command == 'similarity':
         args_dict['output_dir'] = op.join(args.output_dir, 'plots', command)
         generate_similarity_bokeh(**args_dict)
         args_dict['output_dir'] = op.join(args.output_dir, 'data')
         generate_similarity_json(**args_dict)
 
-    if command is None or command == 'multivariate':
+    if command == 'all' or command == 'multivariate':
         args_dict['output_dir'] = op.join(args.output_dir, 'data')
         generate_multivariate(**args_dict)
 
-    if command is None or command == 'regression':
+    if command == 'all' or command == 'regression':
         args_dict['output_dir'] = op.join(args.output_dir, 'plots', command)
         generate_regressions(**args_dict)

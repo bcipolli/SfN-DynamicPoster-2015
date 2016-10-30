@@ -275,6 +275,10 @@
                             <iframe scrolling="no" ng-if="cur_resource == 'few-differences'" ng-src='../brain/regressions-thickness-handedness.html' style="width: 1075px; height: 325px; margin-left: 75px;">
                             </iframe>
                         </div>
+                        <div>
+                            <iframe scrolling="no" ng-if="cur_resource == 'few-differences'" ng-src='../brain/regressions-volume-gender.html' style="width: 1075px; height: 325px; margin-left: 75px;">
+                            </iframe>
+                        </div>
                     </div>
                 </div>
 
@@ -358,6 +362,31 @@
                         </iframe>
                     </div>
 
+                    <div class='content'>
+                        <p>
+                            Select one area in the left brain (showing asymmetry index (AI)), and see a map of the partial correlations of all other areas with that area's AI.
+                        </p>
+                        <iframe scrolling="no" data-ng-if="cur_resource == 'partial-correlation'" data-ng-src='../brain/similarity-slave-thickness.html' style="width: 1100px; height: 550px; margin-left: 100px;" >
+                        </iframe>
+                    </div>
+
+
+                    <div class='content'>
+                        <p>
+                            For volume...
+                        </p>
+                        <iframe scrolling="no" ng-if="cur_resource == 'partial-correlation'" ng-src='../plots/similarity/MRI_cort_vol.ctx..html' style="width: 1000px; height: 900px; margin-left: 250px">
+                        </iframe>
+                    </div>
+
+                    <div class='content'>
+                        <p>
+                            Select one area in the left brain (showing asymmetry index (AI)), and see a map of the partial correlations of all other areas with that area's AI.
+                        </p>
+                        <iframe scrolling="no" data-ng-if="cur_resource == 'partial-correlation'" data-ng-src='../brain/similarity-slave-volume.html' style="width: 1100px; height: 550px; margin-left: 100px;" >
+                        </iframe>
+                    </div>
+
                 </div>
 
 
@@ -372,6 +401,9 @@
 
                         <div style="float:left">
                             <iframe scrolling="no" data-ng-if="cur_resource == 'pca'" data-ng-src='../brain/pca-thickness.html' style="width: 600px; height: 670px;"></iframe>
+                        </div>
+                        <div style="float:left">
+                            <iframe scrolling="no" data-ng-if="cur_resource == 'pca'" data-ng-src='../brain/pca-volume.html' style="width: 600px; height: 670px;"></iframe>
                         </div>
                     </div>
                 </div>

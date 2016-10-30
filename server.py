@@ -33,7 +33,7 @@ def serve_index():
 
 
 def deploy():
-    """ Take all the disparate apps, and create a directory structure that works
+    """Take all the disparate apps, and create a directory structure that works
     on a static webserver with no urlconf."""
     def mkdirp(dir):
         if not os.path.exists(dir):
@@ -116,7 +116,7 @@ def deploy():
 
 
 def server_it():
-    """ Take the mess, and create a flask webserver that knows how to route things
+    """Take the mess, and create a flask webserver that knows how to route things
     to make them work.
     """
 

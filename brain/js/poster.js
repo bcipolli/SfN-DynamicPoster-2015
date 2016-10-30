@@ -1,5 +1,5 @@
 var prefixes = {
-    desikan: { area: 'MRI_cort_area.ctx.', thickness: 'MRI_cort_thick.ctx.'},
+    desikan: { area: 'MRI_cort_area.ctx.', thickness: 'MRI_cort_thick.ctx.', volume: 'MRI_cort_vol.ctx.'},
     destrieux: { area: 'Destrieux_area.', thickness: 'Destrieux_thickness.'}
 }
 

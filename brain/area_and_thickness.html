@@ -50,7 +50,7 @@ Design:
             .brain-container { width: 500px; height: 350px; margin: 10px 50px 10px 50px; }
         </style>
         <div class="brain-container">
-            <div class='label'>Surface Area</div>
+            <div class='label'>Volume</div>
             <div id="plot-canvas" class="brain">
             </div>
         </div>
@@ -76,7 +76,7 @@ Design:
             // Create the right hemi brain
             $scope.stats_brain = new Brain({
                 divID: "plot-canvas",
-                manifest_url: $scope.manifest_url.replace('thickness', 'area').replace('thick', 'area'),
+                manifest_url: $scope.manifest_url.replace('thickness', 'volume').replace('thick', 'vol'),
                 callback: function(mesh) {
                     if ($scope.mesh && $scope.mesh.name == mesh.name)
                         return;
@@ -112,7 +112,7 @@ Design:
                 if ($scope.nav_brain)
                     $scope.nav_brain.loadBrain({manifest_url: newValue});
                 if ($scope.stats_brain)
-                    $scope.stats_brain.loadBrain({manifest_url: newValue.replace('thickness', 'area').replace('thick', 'area')});
+                    $scope.stats_brain.loadBrain({manifest_url: newValue.replace('thickness', 'volume').replace('thick', 'vol')});
             });
         }]);
     </script>
